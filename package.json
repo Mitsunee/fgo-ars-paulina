@@ -11,8 +11,9 @@
     "lint": "eslint .",
     "lint:strict": "eslint --max-warnings 0 .",
     "typecheck": "tsc",
+    "prepare:cache": "tsx src/prebuild/prebuild-script.ts",
     "dev": "next dev",
-    "build": "next build",
+    "build": "tsx src/prebuild/prebuild-script.ts && next build",
     "start": "next start"
   },
   "nano-staged": {
@@ -24,7 +25,9 @@
     "pre-commit": "pnpm nano-staged"
   },
   "dependencies": {
+    "@atlasacademy/api-connector": "^4.0.9",
     "@csstools/postcss-global-data": "^2.0.1",
+    "@foxkit/node-util": "^0.6.0",
     "@nanostores/react": "^0.7.1",
     "modern-normalize": "^2.0.0",
     "nanostores": "^0.9.3",
@@ -32,6 +35,7 @@
     "postcss": "^8.4.27",
     "postcss-preset-env": "^9.1.1",
     "react": "18.2.0",
+    "tsx": "^3.12.7",
     "typescript": "5.1.6",
     "zod": "^3.22.0"
   },

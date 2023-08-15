@@ -11,3 +11,4 @@
 /assets/static/
 /src/client/components/icons/
 next-env.d.ts
+/data/
