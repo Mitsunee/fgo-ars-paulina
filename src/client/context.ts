@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import type { BuildInfo } from "~/data/buildInfo";
 import type { MaterialData } from "~/data/materials";
+import type { ServantData } from "~/data/servants";
 
 export interface DataContext {
   materials: DataMap<MaterialData>;
@@ -20,4 +21,9 @@ export function useMaterialList() {
 export function useBuildInfo() {
   const data = useContext(dataContext);
   return data.info;
+}
+
+export const servantsContext = createContext<DataMap<ServantData>>({});
+export function useServantsData() {
+  return useContext(servantsContext);
 }
