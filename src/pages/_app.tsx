@@ -8,7 +8,7 @@ import Head from "next/head";
 //import { api } from "~/client/api";
 //import { Layout } from "~/components/Layout";
 import { setIsClient } from "~/hooks/useIsClient";
-import { PageMetaSchema } from "~/schema/PageMetaSchema";
+import type { PageMeta } from "~/schema/PageMetaSchema";
 
 const fontTitle = Kanit({
   weight: ["400", "700"],
@@ -24,14 +24,14 @@ const fontSans = Inter({
   display: "swap"
 });
 
-const App: AppType = ({ Component, pageProps }) => {
+const App: AppType<PageMeta> = ({ Component, pageProps }) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     // set isClient
     setIsClient();
   }, []);
 
-  const { meta } = PageMetaSchema.parse(pageProps);
+  const { meta } = pageProps;
 
   /*
       <Layout>
