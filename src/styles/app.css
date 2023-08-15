@@ -24,10 +24,26 @@ html,
   height: 100%;
 }
 
+#__next {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 body {
   color: var(--text);
   background-color: var(--background);
   font-family: var(--sans);
+  font-size: 18px;
+}
+
+main {
+  flex-grow: 1;
+}
+
+footer {
+  background-color: var(--secondary);
+  font-size: 12px;
+  padding: 0.33rem;
 }
 
 h1,
@@ -36,17 +52,27 @@ h3 {
   font-family: var(--title);
 }
 
-#__next {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
 a {
   color: var(--accent);
+}
+
+img {
+  display: block;
 }
 
 button,
 input {
   color: inherit;
   font-family: inherit;
+}
+
+.section {
+  margin: 1.5rem 2.5rem;
+  padding: 1.5rem;
+  border-radius: 6px;
+  background-color: var(--secondary);
+}
+
+.section.error {
+  background-color: var(--primary);
 }

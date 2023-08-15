@@ -29,6 +29,7 @@
     "@csstools/postcss-global-data": "^2.0.1",
     "@foxkit/node-util": "^0.6.0",
     "@nanostores/react": "^0.7.1",
+    "classcat": "^5.0.4",
     "modern-normalize": "^2.0.0",
     "nanostores": "^0.9.3",
     "next": "13.4.16",

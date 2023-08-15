@@ -7,6 +7,9 @@ module.exports = {
     "next",
     "prettier"
   ],
+  rules: {
+    "@next/next/no-img-element": "off"
+  },
   overrides: [
     {
       files: ["**/*.ts?(x)"],
