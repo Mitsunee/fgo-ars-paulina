@@ -17,7 +17,7 @@
     "start": "next start"
   },
   "nano-staged": {
-    "**/*.{js,ts,json,md,yaml,yml}": [
+    "**/*.{js,ts,tsx,json,md,yaml,yml}": [
       "prettier -w"
     ]
   },
