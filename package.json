@@ -1,0 +1,53 @@
+{
+  "name": "fgo-manager",
+  "version": "0.0.0",
+  "author": "Mitsunee",
+  "license": "MIT",
+  "private": "true",
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "format": "prettier -w .",
+    "format:check": "prettier -c .",
+    "lint": "eslint .",
+    "lint:strict": "eslint --max-warnings 0 .",
+    "typecheck": "tsc",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "nano-staged": {
+    "**/*.{js,ts,json,md,yaml,yml}": [
+      "prettier -w"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm nano-staged"
+  },
+  "dependencies": {
+    "@csstools/postcss-global-data": "^2.0.1",
+    "@nanostores/react": "^0.7.1",
+    "modern-normalize": "^2.0.0",
+    "nanostores": "^0.9.3",
+    "next": "13.4.16",
+    "postcss": "^8.4.27",
+    "postcss-preset-env": "^9.1.1",
+    "react": "18.2.0",
+    "typescript": "5.1.6",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "18",
+    "@types/react": "^18.2.20",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-foxkit": "^3.0.2",
+    "eslint-config-next": "^13.4.16",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "nano-staged": "^0.8.0",
+    "prettier": "^3.0.1",
+    "simple-git-hooks": "^2.9.0"
+  }
+}

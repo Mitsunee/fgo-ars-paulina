@@ -1,0 +1,52 @@
+:root {
+  --text: rgb(248, 237, 240);
+  --background: rgb(18, 7, 10);
+  --secondary: rgb(57, 45, 48);
+  --primary: rgb(144, 20, 51);
+  --shaded: rgb(67, 10, 24);
+  --accent: rgb(232, 181, 28);
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body,
+html,
+#__next {
+  margin: 0px;
+  padding: 0px;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  height: 100%;
+}
+
+body {
+  color: var(--text);
+  background-color: var(--background);
+  font-family: var(--sans);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--title);
+}
+
+#__next {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+a {
+  color: var(--accent);
+}
+
+button,
+input {
+  color: inherit;
+  font-family: inherit;
+}
