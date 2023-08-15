@@ -94,7 +94,7 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
-      - name: Build SVG Components
-        run: pnpm build:svgo
+      - name: Prepare Mock Data
+        run: pnpm tsx src/prebuild/mock-script.ts
       - name: Check Types
         run: pnpm typecheck
