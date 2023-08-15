@@ -14,8 +14,19 @@ import type {
 
 function mapServantIcons(assets: EntityAssets) {
   const icons: ServantData["icons"] = {};
-  if (assets.faces.ascension) Object.assign(icons, assets.faces.ascension);
-  if (assets.faces.costume) Object.assign(icons, assets.faces.costume);
+
+  if (assets.faces.ascension) {
+    Object.entries(assets.faces.ascension).forEach(
+      ([key, url]) => (icons[key as `${number}`] = basename(url))
+    );
+  }
+
+  if (assets.faces.costume) {
+    Object.entries(assets.faces.costume).forEach(
+      ([key, url]) => (icons[key as `${number}`] = basename(url))
+    );
+  }
+
   return icons;
 }
 

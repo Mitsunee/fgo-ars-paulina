@@ -56,7 +56,7 @@ export async function getApiInfo(): Promise<{ NA: Info; JP: Info }> {
 
   // format info
   const info: BuildInfo = {
-    dataVer: "0.1.0",
+    dataVer: "0.1.1",
     date: Date.now(),
     JP: apiInfo.JP.timestamp,
     NA: apiInfo.NA.timestamp
