@@ -8,7 +8,6 @@ import Head from "next/head";
 //import { api } from "~/client/api";
 //import { Layout } from "~/components/Layout";
 import { setIsClient } from "~/hooks/useIsClient";
-import type { PageMeta } from "~/schema/PageMetaSchema";
 
 const fontTitle = Kanit({
   weight: ["400", "700"],
@@ -24,28 +23,29 @@ const fontSans = Inter({
   display: "swap"
 });
 
-const App: AppType<PageMeta> = ({ Component, pageProps }) => {
+const App: AppType = ({ Component, pageProps }) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     // set isClient
     setIsClient();
   }, []);
 
-  const { meta } = pageProps;
-
-  /*
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-   */
-
   return (
     <>
       <Head>
-        <title>{meta.title}</title>
-        <meta name="description" content={meta.description} />
-        <meta name="twitter:description" content={meta.description} />
-        <meta property="og:description" content={meta.description} />
+        <title>FGO Manager</title>
+        <meta
+          name="description"
+          content={"This site is still in development :)"}
+        />
+        <meta
+          name="twitter:description"
+          content={"This site is still in development :)"}
+        />
+        <meta
+          property="og:description"
+          content={"This site is still in development :)"}
+        />
       </Head>
       <style jsx global>
         {`

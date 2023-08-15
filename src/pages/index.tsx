@@ -3,13 +3,10 @@ import type { DataContext } from "~/client/context";
 import { dataContext } from "~/client/context";
 import { buildInfo } from "~/data/buildInfo";
 import { materialsData } from "~/data/materials";
-import type { PageMeta } from "~/schema/PageMetaSchema";
 
-type PageProps = DataContext & PageMeta;
-
-export default function HomePage({ materials, info }: PageProps) {
+export default function HomePage(ctx: DataContext) {
   return (
-    <dataContext.Provider value={{ materials, info }}>
+    <dataContext.Provider value={ctx}>
       <h1>Foobar</h1>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia,
       temporibus? Distinctio veniam, placeat assumenda similique modi mollitia
@@ -19,20 +16,11 @@ export default function HomePage({ materials, info }: PageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps<PageProps> = async () => {
+export const getStaticProps: GetStaticProps<DataContext> = async () => {
   const [materials, info] = await Promise.all([
     materialsData.read(),
     buildInfo.read()
   ]);
 
-  return {
-    props: {
-      materials,
-      info,
-      meta: {
-        title: "FGO Manager",
-        description: "This page should not be publically accessible"
-      }
-    }
-  };
+  return { props: { materials, info } };
 };
