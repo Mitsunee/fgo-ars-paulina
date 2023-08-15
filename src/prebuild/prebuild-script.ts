@@ -1,4 +1,5 @@
 import { ApiConnector, Language, Region } from "@atlasacademy/api-connector";
+import { EntityType } from "@atlasacademy/api-connector/dist/Schema/Entity";
 import type { Info } from "@atlasacademy/api-connector/dist/Schema/Info";
 import type { BuildInfo } from "~/data/buildInfo";
 import { buildInfo } from "~/data/buildInfo";
@@ -40,13 +41,17 @@ export async function getApiInfo(): Promise<{ NA: Info; JP: Info }> {
 
   // get servants
   const servants = arrayToDataMap(
-    niceServant.map(servant => {
-      const servantNA = niceServantNA.find(
-        servantNA => servantNA.id == servant.id
-      );
-      const data = apiServantToServantData(servant, servantNA);
-      return data;
-    })
+    niceServant
+      .filter(
+        servant => servant.type == EntityType.NORMAL || servant.id == 800100
+      )
+      .map(servant => {
+        const servantNA = niceServantNA.find(
+          servantNA => servantNA.id == servant.id
+        );
+        const data = apiServantToServantData(servant, servantNA);
+        return data;
+      })
   );
 
   // format info
