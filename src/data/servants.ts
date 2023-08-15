@@ -18,6 +18,7 @@ export interface ServantData {
   rarity: number;
   icons: DataMap<string>;
   skills: Tuple<string, 3>;
+  skillsNA?: Tuple<string, 3>;
   mats: ServantMaterials;
   costumes?: PartialDataMap<string>;
   na?: true;

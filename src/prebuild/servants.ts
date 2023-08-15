@@ -1,3 +1,4 @@
+import { basename } from "path";
 import type {
   EntityAssets,
   EntityLevelUpMaterials
@@ -23,7 +24,7 @@ function getSkillIcons(skills: ServantWithLore["skills"]) {
     const [skill] = skills
       .filter(skill => skill.num == num)
       .sort((a, b) => b.id - a.id);
-    return skill?.icon || "/assets/icon_unknown.png";
+    return skill?.icon ? basename(skill.icon) : "/assets/icon_unknown.png";
   }
 
   const skillIcons: ServantData["skills"] = [
@@ -81,28 +82,40 @@ function getServantMats(servant: ServantWithLore) {
   return mats;
 }
 
-function mapServantCostumes(profile: ServantWithLore["profile"]) {
+function mapServantCostumes(
+  profile: ServantWithLore["profile"],
+  profileNA?: ServantWithLore["profile"]
+) {
   return Object.fromEntries(
-    Object.entries(profile.costume).map(([key, details]) => [key, details.name])
+    Object.entries(profile.costume).map(([key, details]) => {
+      return [key, profileNA?.costume[key]?.name || details.name];
+    })
   );
 }
 
 export function apiServantToServantData(
   servant: ServantWithLore,
-  nameNA?: string
+  servantNA?: ServantWithLore
 ): ServantData {
   const servantData: ServantData = {
     id: servant.id,
-    name: nameNA || servant.name,
+    name: servantNA?.name || servant.name,
     rarity: servant.rarity,
     icons: mapServantIcons(servant.extraAssets),
     skills: getSkillIcons(servant.skills),
     mats: getServantMats(servant)
   };
 
-  if (nameNA) servantData.na = true;
+  if (servantNA) {
+    servantData.na = true;
+    servantData.skillsNA = getSkillIcons(servantNA.skills);
+  }
+
   if (Object.values(servant.profile.costume).length > 0) {
-    servantData.costumes = mapServantCostumes(servant.profile);
+    servantData.costumes = mapServantCostumes(
+      servant.profile,
+      servantNA?.profile
+    );
   }
 
   return servantData;

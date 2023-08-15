@@ -44,14 +44,14 @@ export async function getApiInfo(): Promise<{ NA: Info; JP: Info }> {
       const servantNA = niceServantNA.find(
         servantNA => servantNA.id == servant.id
       );
-      const data = apiServantToServantData(servant, servantNA?.name);
+      const data = apiServantToServantData(servant, servantNA);
       return data;
     })
   );
 
   // format info
   const info: BuildInfo = {
-    dataVer: "0.0.1",
+    dataVer: "0.1.0",
     date: Date.now(),
     JP: apiInfo.JP.timestamp,
     NA: apiInfo.NA.timestamp
