@@ -3,7 +3,9 @@ import { useServantsDataApi } from "~/client/api";
 import { servantsContext } from "~/client/context";
 import { Routes, useRouter } from "~/client/router";
 import { useIsClient } from "~/hooks/useIsClient";
+import { AddServantView } from "~/views/AddServant";
 import { CreateAccountView } from "~/views/CreateAccount";
+import { ServantListView } from "~/views/ServantsList";
 import { Loading } from "./Loading";
 
 function AppRouter() {
@@ -19,10 +21,14 @@ function AppRouter() {
   }
 
   switch (route) {
+    case Routes.SERVANTS_LIST:
+      return <ServantListView />;
     case Routes.CREATE_ACCOUNT:
       return <CreateAccountView />;
+    case Routes.SERVANTS_ADD:
+      return <AddServantView />;
     default:
-      return <h1>PLACEHOLDER</h1>;
+      return <ServantListView />;
   }
 }
 

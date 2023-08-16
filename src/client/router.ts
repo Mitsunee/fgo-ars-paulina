@@ -2,18 +2,19 @@ import { useStore } from "@nanostores/react";
 import { atom } from "nanostores";
 
 export const enum Routes {
-  SERVANTS_VIEW = "servants",
-  CREATE_ACCOUNT = "create-account"
+  SERVANTS_LIST = "servants",
+  CREATE_ACCOUNT = "create-account",
+  SERVANTS_ADD = "add-servants"
 }
 
-const router = atom<Routes>(Routes.SERVANTS_VIEW);
+const router = atom<Routes>(Routes.SERVANTS_LIST);
 
 export function changeRoute(route: Routes) {
   router.set(route);
 }
 
 export function returnHome() {
-  router.set(Routes.SERVANTS_VIEW);
+  router.set(Routes.SERVANTS_LIST);
 }
 
 export function useRouter() {

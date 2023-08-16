@@ -13,3 +13,15 @@ export function ButtonField({
     </fieldset>
   );
 }
+
+export function ButtonRow({
+  children,
+  className,
+  ...props
+}: WithCC<React.ComponentProps<"div">>) {
+  return (
+    <div {...props} className={cc([styles.field, className])}>
+      {children}
+    </div>
+  );
+}
