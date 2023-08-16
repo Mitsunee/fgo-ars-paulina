@@ -1,5 +1,5 @@
 import { basename } from "path";
-import ClassName from "@atlasacademy/api-connector/dist/Enum/ClassName";
+import ClassName from "@atlasacademy/api-connector/dist/Enum/ClassName.js";
 import type {
   EntityAssets,
   EntityLevelUpMaterials
@@ -129,11 +129,12 @@ function mapServantCostumes(
 
 export function apiServantToServantData(
   servant: ServantWithLore,
-  servantNA?: ServantWithLore
+  servantNA?: ServantWithLore,
+  name?: string
 ): ServantData {
   const servantData: ServantData = {
     id: servant.id,
-    name: servantNA?.name || servant.name,
+    name: name || servantNA?.name || servant.name,
     rarity: servant.rarity,
     className: mapServantClass(servant.className),
     icons: mapServantIcons(servant.extraAssets),

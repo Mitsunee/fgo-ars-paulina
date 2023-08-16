@@ -1,12 +1,15 @@
 import { ApiConnector, Language, Region } from "@atlasacademy/api-connector";
 import { EntityType } from "@atlasacademy/api-connector/dist/Schema/Entity";
 import type { Info } from "@atlasacademy/api-connector/dist/Schema/Info";
+import type { ServantWithLore } from "@atlasacademy/api-connector/dist/Schema/Servant";
 import type { BuildInfo } from "~/data/buildInfo";
 import { buildInfo } from "~/data/buildInfo";
 import { materialsData } from "~/data/materials";
+import { getServantNameOverridesFile } from "~/data/servantNameOverrides";
 import { servantsData } from "~/data/servants";
 import { arrayToDataMap } from "~/util/arrayToDataMap";
 import { apiItemToMaterial, getItemsFromNiceServant } from "./items";
+import { generateServantNameList } from "./servantNames";
 import { apiServantToServantData } from "./servants";
 
 const api = {
@@ -21,10 +24,16 @@ export async function getApiInfo(): Promise<{ NA: Info; JP: Info }> {
   return res.json();
 }
 
+function filterServantList(list: ServantWithLore[]) {
+  return list.filter(
+    servant => servant.type == EntityType.NORMAL || servant.id == 800100
+  );
+}
+
 (async function main() {
   const [niceServant, niceServantNA, apiInfo] = await Promise.all([
-    api.JP.servantListNiceWithLore(),
-    api.NA.servantListNiceWithLore(),
+    api.JP.servantListNiceWithLore().then(filterServantList),
+    api.NA.servantListNiceWithLore().then(filterServantList),
     getApiInfo()
   ]);
 
@@ -39,19 +48,27 @@ export async function getApiInfo(): Promise<{ NA: Info; JP: Info }> {
     })
   );
 
+  // get servant names
+  const servantNameOverrides = await getServantNameOverridesFile();
+  const servantNamesMap = await generateServantNameList(
+    niceServant,
+    niceServantNA,
+    servantNameOverrides
+  );
+
   // get servants
   const servants = arrayToDataMap(
-    niceServant
-      .filter(
-        servant => servant.type == EntityType.NORMAL || servant.id == 800100
-      )
-      .map(servant => {
-        const servantNA = niceServantNA.find(
-          servantNA => servantNA.id == servant.id
-        );
-        const data = apiServantToServantData(servant, servantNA);
-        return data;
-      })
+    niceServant.map(servant => {
+      const servantNA = niceServantNA.find(
+        servantNA => servantNA.id == servant.id
+      );
+      const data = apiServantToServantData(
+        servant,
+        servantNA,
+        servantNamesMap[servant.id]
+      );
+      return data;
+    })
   );
 
   // format info

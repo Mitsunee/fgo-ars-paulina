@@ -25,7 +25,7 @@ export const enum ServantClass {
 
 export interface ServantData {
   id: number;
-  name: string; // TODO: servant naming system from fgo-timers
+  name: string;
   rarity: number;
   className: ServantClass;
   icons: DataMap<string>;
