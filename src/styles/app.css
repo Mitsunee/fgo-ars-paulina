@@ -1,10 +1,11 @@
 :root {
   --text: rgb(248, 237, 240);
-  --background: rgb(18, 7, 10);
-  --secondary: rgb(57, 45, 48);
+  --black: rgb(9, 7, 7);
+  --background: rgb(27, 26, 24);
   --primary: rgb(144, 20, 51);
+  --secondary: rgb(57, 45, 48);
   --shaded: rgb(67, 10, 24);
-  --accent: rgb(232, 181, 28);
+  --accent: rgb(238, 186, 134);
 }
 
 *,
@@ -31,7 +32,7 @@ html,
 
 body {
   color: var(--text);
-  background-color: var(--background);
+  background-color: var(--black);
   font-family: var(--sans);
   font-size: 18px;
 }
@@ -41,7 +42,7 @@ main {
 }
 
 footer {
-  background-color: var(--secondary);
+  background-color: var(--background);
   font-size: 12px;
   padding: 0.33rem;
 }
@@ -70,7 +71,7 @@ input {
   margin: 1.5rem 2.5rem;
   padding: 1.5rem;
   border-radius: 6px;
-  background-color: var(--secondary);
+  background-color: var(--background);
 }
 
 .section.error {
@@ -127,7 +128,7 @@ button,
   display: flex;
   flex-flow: row wrap;
   align-items: center;
-  background-color: var(--shaded);
+  background-color: var(--secondary);
   border-radius: 6px;
   border: 1px solid transparent;
   padding: 1rem 1.5rem;
@@ -143,7 +144,7 @@ button,
   }
 
   &:active {
-    border-color: var(--background);
-    box-shadow: inset 0px 2px 2px var(--background);
+    border-color: var(--black);
+    box-shadow: inset 0px 2px 2px var(--black);
   }
 }
