@@ -1,4 +1,5 @@
 import { basename } from "path";
+import ClassName from "@atlasacademy/api-connector/dist/Enum/ClassName";
 import type {
   EntityAssets,
   EntityLevelUpMaterials
@@ -11,6 +12,28 @@ import type {
   ServantData,
   ServantMaterials
 } from "~/data/servants";
+import { ServantClass } from "~/data/servants";
+
+function mapServantClass(className: ClassName) {
+  switch (className) {
+    case ClassName.SABER:
+      return ServantClass.SABER;
+    case ClassName.ARCHER:
+      return ServantClass.ARCHER;
+    case ClassName.LANCER:
+      return ServantClass.LANCER;
+    case ClassName.RIDER:
+      return ServantClass.RIDER;
+    case ClassName.CASTER:
+      return ServantClass.CASTER;
+    case ClassName.ASSASSIN:
+      return ServantClass.ASSASSIN;
+    case ClassName.BERSERKER:
+      return ServantClass.BERSERKER;
+    default:
+      return ServantClass.EXTRA;
+  }
+}
 
 function mapServantIcons(assets: EntityAssets) {
   const icons: ServantData["icons"] = {};
@@ -112,6 +135,7 @@ export function apiServantToServantData(
     id: servant.id,
     name: servantNA?.name || servant.name,
     rarity: servant.rarity,
+    className: mapServantClass(servant.className),
     icons: mapServantIcons(servant.extraAssets),
     skills: getSkillIcons(servant.skills),
     mats: getServantMats(servant)

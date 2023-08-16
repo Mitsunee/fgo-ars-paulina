@@ -12,10 +12,22 @@ export interface ServantMaterials {
   costume?: PartialDataMap<EnhancementStage>;
 }
 
+export const enum ServantClass {
+  SABER,
+  ARCHER,
+  LANCER,
+  RIDER,
+  CASTER,
+  ASSASSIN,
+  BERSERKER,
+  EXTRA
+}
+
 export interface ServantData {
   id: number;
-  name: string;
+  name: string; // TODO: servant naming system from fgo-timers
   rarity: number;
+  className: ServantClass;
   icons: DataMap<string>;
   skills: Tuple<string, 3>;
   skillsNA?: Tuple<string, 3>;
