@@ -99,9 +99,7 @@ export function createAccount(name: string, region: "na" | "jp", fc: string) {
     region,
     fc,
     materials: {},
-    servants: [
-      { id: 800100, stats: [1, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1] }
-    ]
+    servants: [{ id: 1, stats: [1, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1] }]
   };
 
   return account;

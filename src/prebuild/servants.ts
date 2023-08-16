@@ -133,7 +133,7 @@ export function apiServantToServantData(
   name?: string
 ): ServantData {
   const servantData: ServantData = {
-    id: servant.id,
+    id: servant.collectionNo,
     name: name || servantNA?.name || servant.name,
     rarity: servant.rarity,
     className: mapServantClass(servant.className),

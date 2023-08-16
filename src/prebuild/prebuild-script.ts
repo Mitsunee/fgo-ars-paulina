@@ -58,17 +58,19 @@ function filterServantList(list: ServantWithLore[]) {
 
   // get servants
   const servants = arrayToDataMap(
-    niceServant.map(servant => {
-      const servantNA = niceServantNA.find(
-        servantNA => servantNA.id == servant.id
-      );
-      const data = apiServantToServantData(
-        servant,
-        servantNA,
-        servantNamesMap[servant.id]
-      );
-      return data;
-    })
+    niceServant
+      .sort((a, b) => a.collectionNo - b.collectionNo)
+      .map(servant => {
+        const servantNA = niceServantNA.find(
+          servantNA => servantNA.id == servant.id
+        );
+        const data = apiServantToServantData(
+          servant,
+          servantNA,
+          servantNamesMap[servant.id]
+        );
+        return data;
+      })
   );
 
   // format info
