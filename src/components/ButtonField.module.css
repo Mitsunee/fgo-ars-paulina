@@ -1,0 +1,7 @@
+.field {
+  display: flex;
+  flex-basis: 100%;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}

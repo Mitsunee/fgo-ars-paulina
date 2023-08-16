@@ -1,13 +1,29 @@
+import { useAccount } from "~/client/account";
 import { useServantsDataApi } from "~/client/api";
-import { servantsContext, useServantsData } from "~/client/context";
+import { servantsContext } from "~/client/context";
+import { Routes, useRouter } from "~/client/router";
 import { useIsClient } from "~/hooks/useIsClient";
+import { CreateAccountView } from "~/views/CreateAccount";
 import { Loading } from "./Loading";
 
 function AppRouter() {
-  // DEBUG
-  // PLACEHOLDER
-  const servantsData = useServantsData();
-  return <p>servants: {Object.values(servantsData).length}</p>;
+  const user = useAccount();
+  const [route] = useRouter();
+
+  if (user === undefined) {
+    return <Loading title="Loading Account Data" />;
+  }
+
+  if (!user) {
+    return <CreateAccountView forced />;
+  }
+
+  switch (route) {
+    case Routes.CREATE_ACCOUNT:
+      return <CreateAccountView />;
+    default:
+      return <h1>PLACEHOLDER</h1>;
+  }
 }
 
 export function App() {

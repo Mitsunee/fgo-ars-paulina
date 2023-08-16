@@ -76,3 +76,74 @@ input {
 .section.error {
   background-color: var(--primary);
 }
+
+.section :is(h1, h2, h3):first-child {
+  margin-top: 0px;
+}
+
+form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  min-width: 0;
+  max-width: 100%;
+  gap: 1.5rem 0.5rem;
+}
+
+form > fieldset {
+  min-width: min(100%, 420px);
+  border: 0px;
+}
+
+form fieldset,
+form input {
+  max-width: 100%;
+}
+
+form > fieldset > legend {
+  font-size: 14px;
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 0px;
+}
+
+input[type="text"] {
+  border: 0px;
+  border-bottom: 1px solid var(--text);
+  background-color: transparent;
+
+  &:focus {
+    border-bottom-color: var(--accent);
+  }
+}
+
+input[type="submit"],
+input[type="button"],
+button,
+.button {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  background-color: var(--shaded);
+  border-radius: 6px;
+  border: 1px solid transparent;
+  padding: 1rem 1.5rem;
+
+  &.primary {
+    background-color: var(--primary);
+  }
+
+  &:hover,
+  &:focus {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+  }
+
+  &:active {
+    border-color: var(--background);
+    box-shadow: inset 0px 2px 2px var(--background);
+  }
+}

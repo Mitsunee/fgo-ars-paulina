@@ -39,6 +39,7 @@ export interface AccountServant {
 }
 
 export interface AccountData {
+  name: string;
   region: "na" | "jp";
   fc: string;
   servants: AccountServant[];
@@ -92,8 +93,9 @@ export function saveAccount(data: AccountData) {
   );
 }
 
-export function createAccount(region: "na" | "jp", fc: string) {
+export function createAccount(name: string, region: "na" | "jp", fc: string) {
   const account: AccountData = {
+    name,
     region,
     fc,
     materials: {},
@@ -115,6 +117,9 @@ export function selectAccount(id: string) {
   if (!account) return false;
   accountStore.set(account);
   localStorage.setItem(LocalStorageKeys.ACCOUNT_SELECTED, id);
+  document.title = `FGO Manager - ${
+    account.name
+  } (${account.region.toUpperCase()})`;
   return true;
 }
 

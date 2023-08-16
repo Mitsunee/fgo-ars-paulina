@@ -1,0 +1,14 @@
+.input {
+  display: none;
+}
+
+.label {
+  display: inline-block;
+  &:not(:last-of-type) {
+    margin-right: 2px;
+  }
+}
+
+.input:checked + .label {
+  background-color: var(--primary);
+}
