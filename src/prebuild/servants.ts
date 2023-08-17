@@ -7,12 +7,12 @@ import type {
 import type { ItemAmount } from "@atlasacademy/api-connector/dist/Schema/Item";
 import { ItemType } from "@atlasacademy/api-connector/dist/Schema/Item";
 import type { ServantWithLore } from "@atlasacademy/api-connector/dist/Schema/Servant";
+import { ServantClass } from "~/data/ServantClass";
 import type {
   EnhancementStage,
   ServantData,
   ServantMaterials
 } from "~/data/servants";
-import { ServantClass } from "~/data/ServantClass";
 
 function mapServantClass(className: ClassName) {
   switch (className) {
