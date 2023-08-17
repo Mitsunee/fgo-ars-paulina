@@ -110,7 +110,7 @@ export function EditServantForm({
 }: EditServantFormProps) {
   const servantsData = useServantsData();
   const user = useAccount()!;
-  const [owned, setOwned] = useState(servant.owned ?? false);
+  const [owned, setOwned] = useState(servant.owned ?? servant.id === 1);
   const ascension = useStat(0, 4, [
     servant.stats[ServantStat.ASCENSION_CURRENT],
     servant.stats[ServantStat.ASCENSION_TARGET]
@@ -167,13 +167,15 @@ export function EditServantForm({
           defaultChecked={owned}>
           Yes
         </InputRadio>
-        <InputRadio
-          name="owned"
-          value="false"
-          onClick={() => setOwned(false)}
-          defaultChecked={!owned}>
-          No
-        </InputRadio>
+        {servant.id != 1 && (
+          <InputRadio
+            name="owned"
+            value="false"
+            onClick={() => setOwned(false)}
+            defaultChecked={!owned}>
+            No
+          </InputRadio>
+        )}
       </fieldset>
       <StatField {...ascension} icon="" title="Ascension" id="ascension" />
       <SkillsField skills={skills} icons={skillIcons} />
