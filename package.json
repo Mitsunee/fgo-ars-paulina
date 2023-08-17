@@ -28,6 +28,7 @@
     "@atlasacademy/api-connector": "^4.0.9",
     "@csstools/postcss-global-data": "^2.0.1",
     "@foxkit/node-util": "^0.6.0",
+    "@foxkit/util": "^0.6.2",
     "@nanostores/react": "^0.7.1",
     "classcat": "^5.0.4",
     "fast-fuzzy": "^1.12.0",

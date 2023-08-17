@@ -1,29 +1,32 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { createServant } from "~/client/account";
 import { useServantsData } from "~/client/context";
 import { returnHome } from "~/client/router";
-import { ButtonField } from "~/components/ButtonField";
+import { EditServantForm } from "~/components/EditServantForm";
 import { PickServantForm, useFilters } from "./PickServantForm";
 
 export function AddServantView() {
   const [servantId, setServant] = useState<IdKey | null>(null);
   const servantsData = useServantsData();
-  const servant = servantId && servantsData[servantId];
+  const servantData = servantId && servantsData[servantId];
+  const servant = useMemo(
+    () => (servantData ? createServant(servantData) : undefined),
+    [servantData]
+  );
   const [filters, setFilters] = useFilters();
 
   return (
     <section className="section">
-      <h1>{servant ? `Adding ${servant.name}` : `Add Servant`}</h1>
-      {servant ? (
-        <form onSubmit={ev => ev.preventDefault()}>
-          <ButtonField>
-            <button type="button" onClick={() => setServant(null)}>
-              Add other Servant
-            </button>
-            <button type="button" onClick={() => returnHome()}>
-              Cancel
-            </button>
-          </ButtonField>
-        </form>
+      <h1>{servantData ? `Adding ${servantData.name}` : `Add Servant`}</h1>
+      {servantData && servant ? (
+        <EditServantForm servant={servant}>
+          <button type="button" onClick={() => setServant(null)}>
+            Add other Servant
+          </button>
+          <button type="button" onClick={() => returnHome()}>
+            Cancel
+          </button>
+        </EditServantForm>
       ) : (
         <PickServantForm
           data={servantsData}

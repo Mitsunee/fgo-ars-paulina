@@ -92,7 +92,7 @@ form {
   gap: 1.5rem 0.5rem;
 }
 
-form > fieldset {
+form fieldset {
   min-width: min(100%, 420px);
   border: 0px;
 }
@@ -102,7 +102,7 @@ form input {
   max-width: 100%;
 }
 
-form > fieldset > legend {
+form fieldset > legend {
   font-size: 14px;
 }
 
@@ -112,7 +112,8 @@ button:focus-visible {
 }
 
 input[type="text"],
-input[type="search"] {
+input[type="search"],
+input[type="number"] {
   border: 0px;
   border-bottom: 1px solid var(--text);
   background-color: transparent;

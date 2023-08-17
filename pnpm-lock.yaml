@@ -14,6 +14,9 @@ dependencies:
   '@foxkit/node-util':
     specifier: ^0.6.0
     version: 0.6.0
+  '@foxkit/util':
+    specifier: ^0.6.2
+    version: 0.6.2
   '@nanostores/react':
     specifier: ^0.7.1
     version: 0.7.1(nanostores@0.9.3)(react@18.2.0)
@@ -733,6 +736,10 @@ packages:
     peerDependenciesMeta:
       picocolors:
         optional: true
+    dev: false
+
+  /@foxkit/util@0.6.2:
+    resolution: {integrity: sha512-KfQYLizA3Mh5hw+70UaWcJJuuGwI7MBKXn5HuT27uqJGWOWkhvE2SSnvi+md1NJDU/NJxXYwFtDk0yKAuN/DPQ==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.10:
