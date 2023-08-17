@@ -177,7 +177,12 @@ export function EditServantForm({
           </InputRadio>
         )}
       </fieldset>
-      <StatField {...ascension} icon="" title="Ascension" id="ascension" />
+      <StatField
+        {...ascension}
+        icon="https://static.atlasacademy.io/NA/Items/40.png"
+        title="Ascension"
+        id="ascension"
+      />
       <SkillsField skills={skills} icons={skillIcons} />
       <SkillsField skills={appends} icons={appendIcons} append />
       <ButtonField>{children}</ButtonField>
