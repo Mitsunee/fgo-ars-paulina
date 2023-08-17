@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { atom, onMount } from "nanostores";
+import type { ServantData } from "~/data/servants";
 
 export const accountDataVer = "0.0.1"; // will be used in the future to migrate accounts to new data versions
 
@@ -36,6 +37,7 @@ export interface AccountServant {
    * Maps costume id to state where `null` means costume is not wanted, `true` means costume is aquired and `false` means costume is wanted but not unlocked
    */
   costume?: PartialDataMap<boolean | null>;
+  owned?: boolean;
 }
 
 export interface AccountData {
@@ -45,6 +47,11 @@ export interface AccountData {
   servants: AccountServant[];
   materials: Partial<DataMap<number>>;
 }
+
+/**
+ * Store set to `undefined` during loading, `null` if no accounts exist or `AccountData`
+ */
+const accountStore = atom<null | undefined | AccountData>();
 
 export function getAccountList() {
   const str = localStorage.getItem(LocalStorageKeys.ACCOUNT_LIST);
@@ -93,22 +100,39 @@ export function saveAccount(data: AccountData) {
   );
 }
 
+export function createServant(data: ServantData): AccountServant {
+  const servant: AccountServant = {
+    id: data.id,
+    stats: [0, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1]
+  };
+
+  if (data.na) {
+    servant.owned = true;
+  } else {
+    const acc = accountStore.get();
+    if (acc?.region == "jp") servant.owned = true;
+  }
+
+  return servant;
+}
+
 export function createAccount(name: string, region: "na" | "jp", fc: string) {
   const account: AccountData = {
     name,
     region,
     fc,
     materials: {},
-    servants: [{ id: 1, stats: [1, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1] }]
+    servants: [
+      {
+        id: 1,
+        stats: [1, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1],
+        owned: true
+      }
+    ]
   };
 
   return account;
 }
-
-/**
- * Store set to `undefined` during loading, `null` if no accounts exist or `AccountData`
- */
-const accountStore = atom<null | undefined | AccountData>();
 
 export function selectAccount(id: string) {
   const account = getAccount(id);
