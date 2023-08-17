@@ -1,24 +1,24 @@
 import type { Dispatch } from "react";
 import { useMemo, useReducer, useState } from "react";
 import { Searcher } from "fast-fuzzy";
-import { useServantsData } from "~/client/context";
 import { returnHome } from "~/client/router";
 import { ArrowButton } from "~/components/ArrowButton";
 import { ButtonField } from "~/components/ButtonField";
 import { ClassSelector } from "~/components/ClassSelector";
 import { InputRadio } from "~/components/InputRadio";
 import { ServantClass } from "~/data/ServantClass";
+import type { ServantData } from "~/data/servants";
 import { getServantIconUrl } from "~/util/urls";
-import styles from "./AddServant.module.css";
+import styles from "./PickServantForm.module.css";
 
-interface FiltersState {
+export interface FiltersState {
   menu: boolean;
   classes: Record<ServantClass, boolean>;
   rarity: number | null;
   naOnly: boolean;
 }
 
-type FiltersAction =
+export type FiltersAction =
   | { type: "menu"; value: boolean }
   | { type: "classes"; value: ServantClass }
   | { type: "rarity"; value: number | null }
@@ -57,17 +57,23 @@ const reducerDefaults = {
   }
 } satisfies FiltersState;
 
-function PickServantForm({
+export function useFilters() {
+  return useReducer(filtersReducer, reducerDefaults);
+}
+
+interface PickServantFormProps {
+  data: DataMap<ServantData>;
+  set: (id: IdKey | null) => void;
+  filters: FiltersState;
+  setFilters: Dispatch<FiltersAction>;
+}
+
+export function PickServantForm({
   data: servantsData,
   set: pickServant,
   filters,
   setFilters
-}: {
-  data: ReturnType<typeof useServantsData>;
-  set: (id: IdKey | null) => void;
-  filters: FiltersState;
-  setFilters: Dispatch<FiltersAction>;
-}) {
+}: PickServantFormProps) {
   const [query, setQuery] = useState("");
   const [searcher, servantList] = useMemo(() => {
     let servantList = Object.values(servantsData);
@@ -208,37 +214,5 @@ function PickServantForm({
         </button>
       </ButtonField>
     </form>
-  );
-}
-
-export function AddServantView() {
-  const [servantId, setServant] = useState<IdKey | null>(null);
-  const servantsData = useServantsData();
-  const servant = servantId && servantsData[servantId];
-  const [filters, setFilters] = useReducer(filtersReducer, reducerDefaults);
-
-  return (
-    <section className="section">
-      <h1>{servant ? `Adding ${servant.name}` : `Add Servant`}</h1>
-      {servant ? (
-        <form onSubmit={ev => ev.preventDefault()}>
-          <ButtonField>
-            <button type="button" onClick={() => setServant(null)}>
-              Add other Servant
-            </button>
-            <button type="button" onClick={() => returnHome()}>
-              Cancel
-            </button>
-          </ButtonField>
-        </form>
-      ) : (
-        <PickServantForm
-          data={servantsData}
-          set={setServant}
-          filters={filters}
-          setFilters={setFilters}
-        />
-      )}
-    </section>
   );
 }
