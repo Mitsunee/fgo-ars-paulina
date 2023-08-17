@@ -1,5 +1,6 @@
 import path from "path";
 import { DataFile } from "./DataFile";
+import type { ServantClass } from "./ServantClass";
 
 export interface EnhancementStage {
   qp: number;
@@ -10,17 +11,6 @@ export interface ServantMaterials {
   skill: EnhancementStage[];
   ascension?: EnhancementStage[];
   costume?: PartialDataMap<EnhancementStage>;
-}
-
-export const enum ServantClass {
-  SABER,
-  ARCHER,
-  LANCER,
-  RIDER,
-  CASTER,
-  ASSASSIN,
-  BERSERKER,
-  EXTRA
 }
 
 export interface ServantData {

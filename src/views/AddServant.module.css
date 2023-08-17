@@ -1,2 +1,19 @@
 .list {
+  display: flex;
+  flex-basis: 100%;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  & button {
+    max-width: 100%;
+    background-color: transparent;
+    border-radius: 0px;
+    padding: 0px;
+  }
+
+  & button > img {
+    max-width: 100%;
+  }
 }

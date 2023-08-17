@@ -111,7 +111,8 @@ button:focus-visible {
   outline: 0px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="search"] {
   border: 0px;
   border-bottom: 1px solid var(--text);
   background-color: transparent;

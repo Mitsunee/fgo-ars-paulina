@@ -1,0 +1,22 @@
+.field {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 0.5rem;
+
+  & button {
+    background-color: transparent;
+    border: 0px;
+    border-radius: 0px;
+    padding: 0px;
+    width: 2.5rem;
+    &.off {
+      opacity: 0.5;
+    }
+    & img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+    }
+  }
+}

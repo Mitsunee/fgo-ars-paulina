@@ -12,7 +12,7 @@ import type {
   ServantData,
   ServantMaterials
 } from "~/data/servants";
-import { ServantClass } from "~/data/servants";
+import { ServantClass } from "~/data/ServantClass";
 
 function mapServantClass(className: ClassName) {
   switch (className) {
