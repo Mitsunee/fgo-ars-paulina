@@ -6,8 +6,13 @@ interface InputRadioProps extends WithCC<React.ComponentProps<"label">> {
   value: string;
 }
 
+type ControlledChangeHandler = NonNullable<
+  React.ComponentProps<"input">["onChange"] &
+    React.ComponentProps<"label">["onClick"]
+>;
+
 interface InputRadioControlledProps extends Omit<InputRadioProps, "onChange"> {
-  onClick: () => void;
+  onClick: ControlledChangeHandler;
   checked: boolean;
 }
 
