@@ -7,7 +7,7 @@ import { getSkillIconUrl } from "~/util/urls";
 import { ButtonField } from "./ButtonField";
 import type { WithCC } from "./classcat";
 import { cc } from "./classcat";
-import { InputRadio } from "./InputRadio";
+import { InputRadioControlled } from "./InputRadio";
 import styles from "./EditServantForm.module.css";
 
 interface EditServantFormProps extends WithCC<React.ComponentProps<"form">> {
@@ -160,21 +160,21 @@ export function EditServantForm({
       </fieldset>
       <fieldset>
         <legend>Owned</legend>
-        <InputRadio
+        <InputRadioControlled
           name="owned"
           value="true"
           onClick={() => setOwned(true)}
-          defaultChecked={owned}>
+          checked={owned}>
           Yes
-        </InputRadio>
+        </InputRadioControlled>
         {servant.id != 1 && (
-          <InputRadio
+          <InputRadioControlled
             name="owned"
             value="false"
             onClick={() => setOwned(false)}
-            defaultChecked={!owned}>
+            checked={!owned}>
             No
-          </InputRadio>
+          </InputRadioControlled>
         )}
       </fieldset>
       <StatField

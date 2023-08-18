@@ -1,11 +1,41 @@
 import type { WithCC } from "./classcat";
 import { cc } from "./classcat";
-import styles from "./InputRadio.module.css";
 
 interface InputRadioProps extends WithCC<React.ComponentProps<"label">> {
   name: string;
   value: string;
-  defaultChecked?: boolean;
+}
+
+interface InputRadioControlledProps extends Omit<InputRadioProps, "onChange"> {
+  onClick: () => void;
+  checked: boolean;
+}
+
+export function InputRadioControlled({
+  children,
+  className,
+  name,
+  value,
+  checked,
+  ...props
+}: InputRadioControlledProps) {
+  const id = `${name}-${value}`;
+
+  return (
+    <>
+      <input
+        type="radio"
+        name={name}
+        value={value}
+        onChange={props.onClick}
+        checked={checked}
+        className="button"
+      />
+      <label {...props} className={cc([className])} htmlFor={id}>
+        {children}
+      </label>
+    </>
+  );
 }
 
 export function InputRadio({
@@ -23,15 +53,12 @@ export function InputRadio({
       <input
         type="radio"
         name={name}
-        defaultValue={value}
+        value={value}
         id={id}
-        className={styles.input}
         defaultChecked={defaultChecked}
+        className={"button"}
       />
-      <label
-        {...props}
-        className={cc([styles.label, className, "button"])}
-        htmlFor={id}>
+      <label {...props} className={cc([className])} htmlFor={id}>
         {children}
       </label>
     </>

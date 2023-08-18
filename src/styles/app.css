@@ -121,10 +121,15 @@ input[type="number"] {
   &:focus {
     border-bottom-color: var(--accent);
   }
+
+  &:read-only {
+    color: rgb(248, 237, 240, 50%);
+  }
 }
 
 input[type="submit"],
 input[type="button"],
+input[type="radio"].button + label,
 button,
 .button {
   display: flex;
@@ -148,5 +153,27 @@ button,
   &:active {
     border-color: var(--black);
     box-shadow: inset 0px 2px 2px var(--black);
+  }
+}
+
+input[type="radio"].button {
+  display: inline-block;
+  width: 0px;
+  height: 0px;
+
+  & + label {
+    display: inline-block;
+    &:not(:last-of-type) {
+      margin-right: 2px;
+    }
+  }
+
+  &:focus + label {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+  }
+
+  &:checked + label {
+    background-color: var(--primary);
   }
 }
