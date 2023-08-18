@@ -10,7 +10,7 @@ export default function HomePage(ctx: DataContext) {
     <dataContext.Provider value={ctx}>
       <main>
         <noscript>
-          <section className="section error">
+          <section className="section primary">
             <h2>This App requires JavaScript</h2>
             <p>
               Your browser either does not support JavaScript or you need to
