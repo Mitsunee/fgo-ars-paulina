@@ -21,8 +21,16 @@ interface StatProps {
 
 type InputChangeEvent = NonNullable<React.ComponentProps<"input">["onChange"]>;
 
-function useStat(min: number, max: number, initial: [number, number]) {
+function useStat(
+  min: number,
+  max: number,
+  owned: boolean,
+  initial: [number, number]
+) {
   const [stat, setStat] = useState(initial);
+
+  // reset current level to min if servant is not owned
+  if (!owned && stat[0] != min) setStat(stat => [min, stat[1]]);
 
   const setCurrent: InputChangeEvent = ev => {
     let target = stat[1];
@@ -44,6 +52,8 @@ function useStat(min: number, max: number, initial: [number, number]) {
     current: { type: "number", value: stat[0], min, max, onChange: setCurrent },
     target: { type: "number", value: stat[1], min, max, onChange: setTarget }
   };
+
+  if (!owned) props.current.readOnly = true;
 
   return props;
 }
@@ -111,34 +121,34 @@ export function EditServantForm({
   const servantsData = useServantsData();
   const user = useAccount()!;
   const [owned, setOwned] = useState(servant.owned ?? servant.id === 1);
-  const ascension = useStat(0, 4, [
+  const ascension = useStat(0, 4, owned, [
     servant.stats[ServantStat.ASCENSION_CURRENT],
     servant.stats[ServantStat.ASCENSION_TARGET]
   ]);
   const skills = [
-    useStat(1, 10, [
+    useStat(1, 10, owned, [
       servant.stats[ServantStat.SKILL1_CURRENT],
       servant.stats[ServantStat.SKILL1_TARGET]
     ]),
-    useStat(1, 10, [
+    useStat(1, 10, owned, [
       servant.stats[ServantStat.SKILL2_CURRENT],
       servant.stats[ServantStat.SKILL2_TARGET]
     ]),
-    useStat(1, 10, [
+    useStat(1, 10, owned, [
       servant.stats[ServantStat.SKILL3_CURRENT],
       servant.stats[ServantStat.SKILL3_TARGET]
     ])
   ];
   const appends = [
-    useStat(1, 10, [
+    useStat(1, 10, owned, [
       servant.stats[ServantStat.APPEND1_CURRENT],
       servant.stats[ServantStat.APPEND1_TARGET]
     ]),
-    useStat(1, 10, [
+    useStat(1, 10, owned, [
       servant.stats[ServantStat.APPEND2_CURRENT],
       servant.stats[ServantStat.APPEND2_TARGET]
     ]),
-    useStat(1, 10, [
+    useStat(1, 10, owned, [
       servant.stats[ServantStat.APPEND3_CURRENT],
       servant.stats[ServantStat.APPEND3_TARGET]
     ])
@@ -148,6 +158,8 @@ export function EditServantForm({
     user.region == "na"
       ? servantData.skillsNA || servantData.skills
       : servantData.skills;
+  const possibleToOwn =
+    servant.id == 1 || servantData.na || user.region == "jp" || owned;
 
   return (
     <form
@@ -160,13 +172,15 @@ export function EditServantForm({
       </fieldset>
       <fieldset>
         <legend>Owned</legend>
-        <InputRadioControlled
-          name="owned"
-          value="true"
-          onClick={() => setOwned(true)}
-          checked={owned}>
-          Yes
-        </InputRadioControlled>
+        {possibleToOwn && (
+          <InputRadioControlled
+            name="owned"
+            value="true"
+            onClick={() => setOwned(true)}
+            checked={owned}>
+            Yes
+          </InputRadioControlled>
+        )}
         {servant.id != 1 && (
           <InputRadioControlled
             name="owned"
