@@ -6,6 +6,8 @@
   --secondary: rgb(57, 45, 48);
   --shaded: rgb(67, 10, 24);
   --accent: rgb(238, 186, 134);
+  --sans: "Inter", sans-serif;
+  --title: "Kanit", sans-serif;
 }
 
 *,
@@ -19,8 +21,7 @@
 }
 
 body,
-html,
-#__next {
+html {
   margin: 0px;
   padding: 0px;
   min-width: 100%;
@@ -29,12 +30,9 @@ html,
   height: 100%;
 }
 
-#__next {
+body {
   display: flex;
   flex-flow: column nowrap;
-}
-
-body {
   color: var(--text);
   background-color: var(--black);
   font-family: var(--sans);

@@ -6,38 +6,44 @@
   "private": "true",
   "scripts": {
     "prepare": "simple-git-hooks",
-    "format": "prettier -w .",
+    "format": "prettier -w . --plugin=prettier-plugin-astro",
     "format:check": "prettier -c .",
     "lint": "eslint .",
     "lint:strict": "eslint --max-warnings 0 .",
-    "typecheck": "tsc",
+    "typecheck": "astro check && tsc",
     "prepare:cache": "tsx src/prebuild/prebuild-script.ts",
-    "dev": "next dev",
-    "build": "tsx src/prebuild/prebuild-script.ts && next build",
-    "start": "next start"
+    "dev": "astro dev",
+    "build": "tsx src/prebuild/prebuild-script.ts && astro build",
+    "start": "astro preview"
   },
   "nano-staged": {
-    "**/*.{js,ts,tsx,json,md,yaml,yml}": [
-      "prettier -w"
+    "**/*.{js,ts,tsx,json,md,yaml,yml,astro}": [
+      "prettier -w --plugin=prettier-plugin-astro"
     ]
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm nano-staged"
   },
   "dependencies": {
+    "@astrojs/preact": "^2.2.2",
+    "@astrojs/vercel": "^3.8.2",
     "@atlasacademy/api-connector": "^4.0.9",
     "@csstools/postcss-global-data": "^2.0.1",
+    "@fontsource/inter": "^5.0.8",
+    "@fontsource/kanit": "^5.0.9",
     "@foxkit/node-util": "^0.6.0",
     "@foxkit/util": "^0.6.2",
-    "@nanostores/react": "^0.7.1",
+    "@nanostores/preact": "^0.5.0",
+    "astro": "2.10.12",
     "classcat": "^5.0.4",
     "fast-fuzzy": "^1.12.0",
     "modern-normalize": "^2.0.0",
     "nanostores": "^0.9.3",
-    "next": "13.4.16",
     "postcss": "^8.4.27",
     "postcss-preset-env": "^9.1.1",
-    "react": "18.2.0",
+    "preact": "^10.6.5",
+    "react": "npm:@preact/compat",
+    "react-dom": "npm:@preact/compat",
     "tsx": "^3.12.7",
     "typescript": "5.1.6",
     "yaml": "^2.3.1",
@@ -45,17 +51,20 @@
   },
   "devDependencies": {
     "@types/node": "18",
-    "@types/react": "^18.2.20",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
     "eslint": "^8.47.0",
     "eslint-config-foxkit": "^3.0.2",
-    "eslint-config-next": "^13.4.16",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-astro": "^0.28.0",
     "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "nano-staged": "^0.8.0",
     "prettier": "^3.0.1",
+    "prettier-plugin-astro": "^0.11.1",
     "simple-git-hooks": "^2.9.0"
   }
 }

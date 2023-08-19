@@ -1,0 +1,15 @@
+---
+import { App } from "../components/App";
+import { buildInfo } from "../data/buildInfo";
+import { materialsData } from "../data/materials";
+import AppLayout from "../layouts/AppLayout.astro";
+
+const [materials, info] = await Promise.all([
+  materialsData.read(),
+  buildInfo.read()
+]);
+---
+
+<AppLayout>
+  <App client:load materials={materials} info={info} />
+</AppLayout>

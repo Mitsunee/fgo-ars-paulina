@@ -1,21 +1,26 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { ServantData } from "~/data/servants";
+import type { APIRoute } from "astro";
+//import type { ServantData } from "~/data/servants";
 import { servantsData } from "~/data/servants";
 import buildInfo from "../../../data/info.json";
 
 const lastMod = new Date(buildInfo.date).toUTCString();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<DataMap<ServantData>>
-) {
-  if (req.headers["if-modified-since"] == lastMod) {
-    res.status(304).end();
-    return;
+export const get: APIRoute = async function ({ request }) {
+  if (request.headers.get("if-modified-since") == lastMod) {
+    return new Response(null, { status: 304 });
   }
 
-  res.setHeader("Last-Modified", lastMod);
-  res.setHeader("Cache-Control", "max-age=900, must-revalidate");
   const data = await servantsData.read();
-  res.status(200).json(data);
-}
+
+  return new Response(
+    JSON.stringify(data), // TODO: do fs read to avoid needing to re-stringify here
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Last-Modified": lastMod,
+        "Cache-Control": "max-age=900, must-revalidate"
+      }
+    }
+  );
+};

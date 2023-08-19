@@ -1,0 +1,38 @@
+---
+import Document from "./Document.astro";
+
+interface Props {
+  title?: string;
+}
+---
+
+<Document
+  title={Astro.props.title}
+  description="This site is still in development :)">
+  <main>
+    <noscript>
+      <section class="section primary">
+        <h2>This App requires JavaScript</h2>
+        <p>
+          Your browser either does not support JavaScript or you need to permit
+          this website to use scripts.
+        </p>
+      </section>
+    </noscript>
+    <slot />
+  </main>
+  <footer>
+    Made by <a href="https://www.mitsunee.com">Mitsunee</a> | “Fate/Grand Order”
+    is a trademark of Notes Co., Ltd. | Game Assets © Aniplex Inc. used under
+    fair use.
+    <br />
+     Thanks to:{" "}
+    <a
+      href="https://atlasacademy.io/"
+      target="_blank"
+      rel="noopener noreferrer">
+      Atlas Academy
+    </a>{" "}
+     (Game Data API and Assets)
+  </footer>
+</Document>

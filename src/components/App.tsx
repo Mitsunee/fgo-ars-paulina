@@ -1,6 +1,7 @@
 import { useAccount } from "~/client/account";
 import { useServantsDataApi } from "~/client/api";
-import { servantsContext } from "~/client/context";
+import type { DataContext } from "~/client/context";
+import { dataContext, servantsContext } from "~/client/context";
 import { Routes, useRouter } from "~/client/router";
 import { useIsClient } from "~/hooks/useIsClient";
 import { AddServantView } from "~/views/AddServant";
@@ -32,7 +33,7 @@ function AppRouter() {
   }
 }
 
-export function App() {
+export function App(ctxProps: DataContext) {
   const isClient = useIsClient();
   const servantsData = useServantsDataApi();
   const isError = servantsData.state == "error";
@@ -59,8 +60,10 @@ export function App() {
   }
 
   return (
-    <servantsContext.Provider value={servantsData.data}>
-      <AppRouter />
-    </servantsContext.Provider>
+    <dataContext.Provider value={ctxProps}>
+      <servantsContext.Provider value={servantsData.data}>
+        <AppRouter />
+      </servantsContext.Provider>
+    </dataContext.Provider>
   );
 }

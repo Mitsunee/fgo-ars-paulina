@@ -1,12 +1,12 @@
-import type { WithCC } from "./classcat";
-import { cc } from "./classcat";
+import type { ElementProps, WithCC } from "./jsx";
+import { cc } from "./jsx";
 import styles from "./ButtonField.module.css";
 
 export function ButtonField({
   children,
   className,
   ...props
-}: WithCC<React.ComponentProps<"fieldset">>) {
+}: WithCC<ElementProps<"fieldset">>) {
   return (
     <fieldset {...props} className={cc([styles.field, className])}>
       {children}
@@ -18,7 +18,7 @@ export function ButtonRow({
   children,
   className,
   ...props
-}: WithCC<React.ComponentProps<"div">>) {
+}: WithCC<ElementProps<"div">>) {
   return (
     <div {...props} className={cc([styles.field, className])}>
       {children}

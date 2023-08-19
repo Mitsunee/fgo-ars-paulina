@@ -1,6 +1,6 @@
-import type { Dispatch } from "react";
-import { useMemo, useReducer, useState } from "react";
 import { Searcher } from "fast-fuzzy";
+import type { Dispatch } from "preact/hooks";
+import { useMemo, useReducer, useState } from "preact/hooks";
 import { returnHome } from "~/client/router";
 import { ArrowButton } from "~/components/ArrowButton";
 import { ButtonField } from "~/components/ButtonField";
@@ -108,7 +108,7 @@ export function PickServantForm({
           type="search"
           name="servant-search"
           value={query}
-          onChange={ev => setQuery(ev.target.value)}
+          onChange={ev => setQuery(ev.currentTarget.value)}
           placeholder="Search"
         />
         <ArrowButton

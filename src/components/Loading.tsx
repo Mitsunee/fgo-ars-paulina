@@ -1,5 +1,5 @@
-import type { WithCC } from "./classcat";
-import { cc } from "./classcat";
+import type { WithCC } from "./jsx";
+import { cc } from "./jsx";
 import styles from "./Loading.module.css";
 
 export function Loading({

@@ -1,25 +1,25 @@
-import { useState } from "react";
 import { clamp } from "@foxkit/util/clamp";
+import { useState } from "preact/hooks";
 import type { AccountServant } from "~/client/account";
 import { ServantStat, useAccount } from "~/client/account";
 import { useServantsData } from "~/client/context";
 import { getSkillIconUrl } from "~/util/urls";
 import { ButtonField } from "./ButtonField";
-import type { WithCC } from "./classcat";
-import { cc } from "./classcat";
 import { InputRadioControlled } from "./InputRadio";
+import type { ElementProps, WithCC } from "./jsx";
+import { cc } from "./jsx";
 import styles from "./EditServantForm.module.css";
 
-interface EditServantFormProps extends WithCC<React.ComponentProps<"form">> {
+interface EditServantFormProps extends WithCC<ElementProps<"form">> {
   servant: AccountServant;
 }
 
 interface StatProps {
-  current: React.ComponentProps<"input">;
-  target: React.ComponentProps<"input">;
+  current: ElementProps<"input">;
+  target: ElementProps<"input">;
 }
 
-type InputChangeEvent = NonNullable<React.ComponentProps<"input">["onChange"]>;
+type InputChangeEvent = NonNullable<ElementProps<"input">["onChange"]>;
 
 function useStat(
   min: number,
@@ -59,8 +59,8 @@ function useStat(
 }
 
 interface StatFieldProps {
-  current: React.ComponentProps<"input">;
-  target: React.ComponentProps<"input">;
+  current: ElementProps<"input">;
+  target: ElementProps<"input">;
   icon: string;
   title: string;
   id: string;

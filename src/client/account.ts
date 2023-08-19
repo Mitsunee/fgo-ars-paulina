@@ -1,4 +1,4 @@
-import { useStore } from "@nanostores/react";
+import { useStore } from "@nanostores/preact";
 import { atom, onMount } from "nanostores";
 import type { ServantData } from "~/data/servants";
 
