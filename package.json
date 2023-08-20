@@ -7,7 +7,7 @@
   "scripts": {
     "prepare": "simple-git-hooks",
     "format": "prettier -w . --plugin=prettier-plugin-astro",
-    "format:check": "prettier -c .",
+    "format:check": "prettier -c . --plugin=prettier-plugin-astro",
     "lint": "eslint .",
     "lint:strict": "eslint --max-warnings 0 .",
     "typecheck": "astro check && tsc",
@@ -17,7 +17,10 @@
     "start": "astro preview"
   },
   "nano-staged": {
-    "**/*.{js,ts,tsx,json,md,yaml,yml,astro}": [
+    "**/*.{js,mjs,cjs,ts,tsx,json,md,yaml,yml,css}": [
+      "prettier -w"
+    ],
+    "**/*.astro": [
       "prettier -w --plugin=prettier-plugin-astro"
     ]
   },
