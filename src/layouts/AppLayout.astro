@@ -1,0 +1,19 @@
+---
+import Footer from "../components/Footer.astro";
+import NoScript from "../components/NoScript.astro";
+import Document from "./Document.astro";
+
+interface Props {
+  title?: string;
+}
+---
+
+<Document
+  title={Astro.props.title}
+  description="This site is still in development :)">
+  <main>
+    <NoScript />
+    <slot />
+  </main>
+  <Footer />
+</Document>

@@ -1,5 +1,5 @@
 import { ServantClass } from "~/data/ServantClass";
-import { cc } from "./classcat";
+import { cc } from "./jsx";
 import styles from "./ClassSelector.module.css";
 
 interface ClassSelectorProps {

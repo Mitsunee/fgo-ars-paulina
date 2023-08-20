@@ -1,0 +1,13 @@
+---
+import { App } from "../components/App";
+import { buildInfo } from "../data/buildInfo";
+import AppLayout from "../layouts/AppLayout.astro";
+
+const info = await buildInfo.read();
+
+export const prerender = true;
+---
+
+<AppLayout>
+  <App client:load info={info} />
+</AppLayout>

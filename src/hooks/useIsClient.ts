@@ -1,4 +1,4 @@
-import { useStore } from "@nanostores/react";
+import { useStore } from "@nanostores/preact";
 import { atom, onMount } from "nanostores";
 
 const isClient = atom(false);
@@ -21,7 +21,7 @@ onMount(isClient, () => {
   // skip if on serverside pre-render or production deployment
   if (
     typeof window == "undefined" ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV == "production"
+    import.meta.env.NEXT_PUBLIC_VERCEL_ENV == "production"
   ) {
     return;
   }

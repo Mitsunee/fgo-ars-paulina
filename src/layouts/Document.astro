@@ -1,0 +1,44 @@
+---
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/kanit/700.css";
+import "~/styles/app.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noRobots?: true;
+  // image // TODO: implement meta image
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta name="application-name" content="FGO Manager" />
+    <meta property="og:site_name" content="FGO Manager" />
+    {Astro.props.noRobots && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={Astro.url.href} />
+    <title>{Astro.props.title}</title>
+    <meta property="og:title" content={Astro.props.title} />
+    <meta name="twitter:title" content={Astro.props.title} />
+    <meta name="description" content={Astro.props.description} />
+    <meta property="og:description" content={Astro.props.description} />
+    <meta name="twitter:description" content={Astro.props.description} />
+    <!--<meta property="og:image" content={pageIcon} />-->
+    <!--<meta name="twitter:image" content={pageIcon} />-->
+    <meta name="theme-color" content="#901433" />
+  </head>
+
+  <body>
+    <slot />
+    <script>
+      import { setIsClient } from "~/hooks/useIsClient";
+
+      setIsClient();
+    </script>
+  </body>
+</html>

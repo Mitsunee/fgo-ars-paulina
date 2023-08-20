@@ -1,14 +1,13 @@
-import type { WithCC } from "./classcat";
-import { cc } from "./classcat";
+import type { ElementProps, WithCC } from "./jsx";
+import { cc } from "./jsx";
 
-interface InputRadioProps extends WithCC<React.ComponentProps<"label">> {
+interface InputRadioProps extends WithCC<ElementProps<"label">> {
   name: string;
   value: string;
 }
 
 type ControlledChangeHandler = NonNullable<
-  React.ComponentProps<"input">["onChange"] &
-    React.ComponentProps<"label">["onClick"]
+  ElementProps<"input">["onChange"] & ElementProps<"label">["onClick"]
 >;
 
 interface InputRadioControlledProps extends Omit<InputRadioProps, "onChange"> {

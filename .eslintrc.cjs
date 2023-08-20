@@ -2,13 +2,13 @@ module.exports = {
   parserOptions: { sourceType: "module" },
   extends: [
     "foxkit/strict",
-    "foxkit/react",
     "foxkit/ts-strict",
-    "next",
+    "foxkit/preact",
+    "plugin:astro/recommended",
     "prettier"
   ],
   rules: {
-    "@next/next/no-img-element": "off"
+    "react/react-in-jsx-scope": "off"
   },
   overrides: [
     {
@@ -21,7 +21,19 @@ module.exports = {
       }
     },
     {
-      files: ["**/*.mjs", "**/*.js?(x)", "**/*.ts?(x)"],
+      files: ["**/*.astro"],
+      parser: "astro-eslint-parser",
+      parserOptions: {
+        parser: "@typescript-eslint/parser",
+        extraFileExtensions: [".astro"]
+      },
+      rules: {
+        "react/jsx-filename-extension": "off",
+        "react/no-unknown-property": ["error", { ignore: ["class"] }]
+      }
+    },
+    {
+      files: ["**/*.mjs", "**/*.js?(x)", "**/*.ts?(x)", "**/*.astro"],
       plugins: ["simple-import-sort"],
       extends: ["plugin:import/recommended", "plugin:import/typescript"],
       rules: {

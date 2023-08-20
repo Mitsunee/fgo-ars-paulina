@@ -7,22 +7,23 @@ import {
 import { returnHome } from "~/client/router";
 import { ButtonField } from "~/components/ButtonField";
 import { InputRadio } from "~/components/InputRadio";
+import type { ElementProps, ElementRef } from "~/components/jsx";
 
 interface ViewProps {
   forced?: true;
 }
 
-const handleSubmit: React.ComponentProps<"form">["onSubmit"] = event => {
+const handleSubmit: ElementProps<"form">["onSubmit"] = event => {
   event.preventDefault();
   const { elements } = event.currentTarget;
 
   // get name
-  const nameEl = elements.namedItem("accountname") as React.ElementRef<"input">;
+  const nameEl = elements.namedItem("accountname") as ElementRef<"input">;
   const name = nameEl.checkValidity() && nameEl.value;
   if (!name) return;
 
   // get fc
-  const fcEl = elements.namedItem("friendcode") as React.ElementRef<"input">;
+  const fcEl = elements.namedItem("friendcode") as ElementRef<"input">;
   const fc = fcEl.checkValidity() && fcEl.value;
   if (!fc) return;
 

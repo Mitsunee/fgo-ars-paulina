@@ -1,5 +1,5 @@
-import type { WithCC } from "./classcat";
-import { cc } from "./classcat";
+import type { CSSProperties, ElementProps, WithCC } from "./jsx";
+import { cc } from "./jsx";
 import styles from "./ArrowButton.module.css";
 
 interface ArrowProps {
@@ -7,7 +7,7 @@ interface ArrowProps {
   active: boolean;
 }
 
-interface ArrowButtonProps extends WithCC<React.ComponentProps<"button">> {
+interface ArrowButtonProps extends WithCC<ElementProps<"button">> {
   state: boolean;
   set: (v: boolean) => void;
   children: string;
@@ -24,7 +24,7 @@ function Arrow({ side, active }: ArrowProps) {
       height="24"
       viewBox="0 0 24 24"
       className={styles.arrow}
-      style={{ "--rot": rot } as React.CSSProperties}>
+      style={{ "--rot": rot } as CSSProperties}>
       <path d="M12 3l12 18h-24z" />
     </svg>
   );
