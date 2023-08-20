@@ -20,6 +20,8 @@ function useApiEndpoint<T>(url: string) {
         if (controller.signal.aborted) return;
         setState({ status: "error" });
       });
+
+    return () => controller.abort();
   }, [url]);
 
   return state;
