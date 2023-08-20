@@ -11,7 +11,9 @@ export const get: APIRoute = async function ({ request }) {
       return new Response(null, { status: 304 });
     }
 
-    const data = await readFile(path.join(process.cwd(), "data/servants.json"));
+    const data = await readFile(
+      path.join(process.cwd(), "data/materials.json")
+    );
 
     return new Response(data.toString(), {
       status: 200,

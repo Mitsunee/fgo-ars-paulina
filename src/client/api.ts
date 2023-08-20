@@ -1,27 +1,34 @@
 import { useEffect, useState } from "preact/hooks";
+import type { MaterialData } from "~/data/materials";
 import type { ServantData } from "~/data/servants";
 
-type ServantsDataState =
-  | { state: "loading" | "error"; data?: undefined }
-  | { state: "success"; data: DataMap<ServantData> };
+type DataState<T> =
+  | { status: "loading" | "error"; data?: undefined }
+  | { status: "success"; data: T };
 
-export function useServantsDataApi() {
-  const [state, setState] = useState<ServantsDataState>({ state: "loading" });
+function useApiEndpoint<T>(url: string) {
+  const [state, setState] = useState<DataState<T>>({ status: "loading" });
 
   useEffect(() => {
     if (typeof window == "undefined") return;
     const controller = new AbortController();
 
-    fetch("/api/servants", { cache: "default", signal: controller.signal })
+    fetch(url, { cache: "default", signal: controller.signal })
       .then(res => res.json())
-      .then(data => setState({ state: "success", data }))
+      .then(data => setState({ status: "success", data }))
       .catch(() => {
         if (controller.signal.aborted) return;
-        setState({ state: "error" });
+        setState({ status: "error" });
       });
-
-    return () => controller.abort();
-  }, []);
+  }, [url]);
 
   return state;
+}
+
+export function useServantsDataApi() {
+  return useApiEndpoint<DataMap<ServantData>>("/api/servants");
+}
+
+export function useMaterialsDataApi() {
+  return useApiEndpoint<DataMap<MaterialData>>("/api/materials");
 }

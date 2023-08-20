@@ -1,13 +1,21 @@
 import { useAccount } from "~/client/account";
-import { useServantsDataApi } from "~/client/api";
-import type { DataContext } from "~/client/context";
-import { dataContext, servantsContext } from "~/client/context";
+import { useMaterialsDataApi, useServantsDataApi } from "~/client/api";
+import {
+  infoContext,
+  materialsContext,
+  servantsContext
+} from "~/client/context";
 import { Routes, useRouter } from "~/client/router";
+import type { BuildInfo } from "~/data/buildInfo";
 import { useIsClient } from "~/hooks/useIsClient";
 import { AddServantView } from "~/views/AddServant";
 import { CreateAccountView } from "~/views/CreateAccount";
 import { ServantListView } from "~/views/ServantsList";
 import { Loading } from "./Loading";
+
+export interface AppProps {
+  info: BuildInfo;
+}
 
 function AppRouter() {
   const user = useAccount();
@@ -33,11 +41,16 @@ function AppRouter() {
   }
 }
 
-export function App(ctxProps: DataContext) {
+export function App(ctxProps: AppProps) {
   const isClient = useIsClient();
   const servantsData = useServantsDataApi();
-  const isError = servantsData.state == "error";
-  const isReady = isClient && servantsData.state == "success";
+  const materialsData = useMaterialsDataApi();
+  const isError =
+    servantsData.status == "error" || materialsData.status == "error";
+  const isReady =
+    isClient &&
+    servantsData.status == "success" &&
+    materialsData.status == "success";
 
   if (!isClient) {
     return <Loading title="Loading App" />;
@@ -60,10 +73,12 @@ export function App(ctxProps: DataContext) {
   }
 
   return (
-    <dataContext.Provider value={ctxProps}>
+    <infoContext.Provider value={ctxProps.info}>
       <servantsContext.Provider value={servantsData.data}>
-        <AppRouter />
+        <materialsContext.Provider value={materialsData.data}>
+          <AppRouter />
+        </materialsContext.Provider>
       </servantsContext.Provider>
-    </dataContext.Provider>
+    </infoContext.Provider>
   );
 }
