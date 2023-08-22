@@ -70,7 +70,7 @@ function StatField({ current, target, icon, title, id }: StatFieldProps) {
   return (
     <fieldset className={styles.field}>
       <legend>{title}</legend>
-      <img src={icon} alt="" width={48} height={48} />
+      <img src={icon} alt="" width={48} height={48} loading="lazy" />
       <input
         {...current}
         name={`${id}-current`}

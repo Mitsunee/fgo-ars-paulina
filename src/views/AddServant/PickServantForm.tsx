@@ -203,6 +203,7 @@ export function PickServantForm({
                 title={servant.name}
                 width={142}
                 height={155}
+                loading="lazy"
               />
             </button>
           );
