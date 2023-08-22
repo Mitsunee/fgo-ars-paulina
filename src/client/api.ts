@@ -12,14 +12,20 @@ function useApiEndpoint<T>(url: string) {
   useEffect(() => {
     if (typeof window == "undefined") return;
     const controller = new AbortController();
+    let retries = 3;
 
-    fetch(url, { cache: "default", signal: controller.signal })
-      .then(res => res.json())
-      .then(data => setState({ status: "success", data }))
-      .catch(() => {
-        if (controller.signal.aborted) return;
-        setState({ status: "error" });
-      });
+    (async () => {
+      while (retries-- && !controller.signal.aborted) {
+        const res = await fetch(url, { cache: "default" });
+        if (!res.ok) continue;
+        if (!controller.signal.aborted) {
+          setState({ status: "success", data: await res.json() });
+        }
+        return;
+      }
+
+      setState({ status: "error" });
+    })();
 
     return () => controller.abort();
   }, [url]);
