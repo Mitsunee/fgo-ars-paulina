@@ -23,7 +23,7 @@
 }
 
 .field.radio {
-  gap: 0px; /* gap is managed by semi-invisible radio inputs */
+  gap: 0px !important; /* gap is managed by semi-invisible radio inputs */
 }
 
 .fieldgroup {
