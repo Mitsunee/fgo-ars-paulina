@@ -106,7 +106,7 @@ export async function generateServantNameList(
       // also check if an Alter (or similar) exists.
       // Shoutouts to Lizzy who makes up a new name each time lol
       isDuplicated ||=
-        Array.from(Object.keys(baseNameAppearances)).filter(name =>
+        Object.keys(baseNameAppearances).filter(name =>
           name.startsWith(`${baseName} (`)
         ).length > 0;
 

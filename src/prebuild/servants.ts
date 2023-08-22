@@ -13,6 +13,7 @@ import type {
   ServantData,
   ServantMaterials
 } from "~/data/servants";
+import { mapObject } from "~/util/mapObject";
 
 function mapServantClass(className: ClassName) {
   switch (className) {
@@ -86,7 +87,6 @@ function flattenEnhancementStage(stage: EntityLevelUpMaterials) {
 }
 
 function getServantMats(servant: ServantWithLore) {
-  const constumeEntries = Object.entries(servant.costumeMaterials);
   const mats: ServantMaterials = {
     skill: Object.values(servant.skillMaterials).map(stage =>
       flattenEnhancementStage(stage)
@@ -104,13 +104,8 @@ function getServantMats(servant: ServantWithLore) {
     );
   }
 
-  if (constumeEntries.length > 0) {
-    mats.costume = Object.fromEntries(
-      constumeEntries.map(([key, stage]) => [
-        key,
-        flattenEnhancementStage(stage)
-      ])
-    );
+  if (Object.values(servant.costumeMaterials).length > 0) {
+    mats.costume = mapObject(servant.costumeMaterials, flattenEnhancementStage);
   }
 
   return mats;
@@ -120,10 +115,9 @@ function mapServantCostumes(
   profile: ServantWithLore["profile"],
   profileNA?: ServantWithLore["profile"]
 ) {
-  return Object.fromEntries(
-    Object.entries(profile.costume).map(([key, details]) => {
-      return [key, profileNA?.costume[key]?.name || details.name];
-    })
+  return mapObject(
+    profile.costume,
+    (costume, key) => profileNA?.costume[key]?.name || costume.name
   );
 }
 
