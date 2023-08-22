@@ -19,19 +19,29 @@ interface StatFieldProps {
   icon: string;
   title: string;
   id: string;
+  owned: boolean;
 }
 
 interface EditServantFormProps extends WithCC<ElementProps<"form">> {
   servant: AccountServant;
 }
 
-function StatField({ current, target, icon, title, id }: StatFieldProps) {
+function StatField({
+  current,
+  target,
+  icon,
+  title,
+  id,
+  owned
+}: StatFieldProps) {
   return (
     <fieldset className={styles.field}>
       <legend>{title}</legend>
       <img src={icon} alt="" width={48} height={48} loading="lazy" />
       <input
         {...current}
+        value={owned ? current.value : current.min}
+        readOnly={!owned}
         name={`${id}-current`}
         title={`Current ${title} Stage`}
       />
@@ -40,15 +50,14 @@ function StatField({ current, target, icon, title, id }: StatFieldProps) {
   );
 }
 
-function SkillsField({
-  skills,
-  icons,
-  append
-}: {
+interface SkillsFieldProps {
   skills: StatProps[];
   icons: string[];
   append?: boolean;
-}) {
+  owned: boolean;
+}
+
+function SkillsField({ skills, icons, append, owned }: SkillsFieldProps) {
   return (
     <div className={styles.fieldgroup}>
       {skills.map((skill, idx) => {
@@ -62,6 +71,7 @@ function SkillsField({
             icon={icon}
             title={`${append ? "Append " : ""}Skill ${num}`}
             id={`${append ? "append" : "skill"}-${idx}`}
+            owned={owned}
           />
         );
       })}
@@ -133,7 +143,7 @@ export function EditServantForm({
   const costumesData = servantData.costumes; // need to extract this to help typescript's bad short term memory in the JSX lol
   const user = useAccount()!;
   const [owned, setOwned] = useState(oldServant.owned ?? oldServant.id === 1);
-  const { ascension, skills, appends } = useStats(owned, oldServant);
+  const { ascension, skills, appends } = useStats(oldServant);
   const [costumeIds, costumes, setCostume] = useCostumes(
     costumesData,
     oldServant.costume
@@ -181,11 +191,12 @@ export function EditServantForm({
         icon="https://static.atlasacademy.io/NA/Items/40.png"
         title="Ascension"
         id="ascension"
+        owned={owned}
       />
       {/* TODO: implement priority system here */}
       <h2>Skills</h2>
-      <SkillsField skills={skills} icons={skillIcons} />
-      <SkillsField skills={appends} icons={appendIcons} append />
+      <SkillsField skills={skills} icons={skillIcons} owned={owned} />
+      <SkillsField skills={appends} icons={appendIcons} owned={owned} append />
       {costumes && costumesData && (
         <>
           <h2>Costumes</h2>

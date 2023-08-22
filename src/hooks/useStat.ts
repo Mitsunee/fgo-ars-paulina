@@ -11,16 +11,8 @@ export interface StatProps {
 
 type InputChangeEvent = NonNullable<ElementProps<"input">["onChange"]>;
 
-export function useStat(
-  min: number,
-  max: number,
-  owned: boolean,
-  initial: [number, number]
-) {
+export function useStat(min: number, max: number, initial: [number, number]) {
   const [stat, setStat] = useState(initial);
-
-  // reset current level to min if servant is not owned
-  if (!owned && stat[0] != min) setStat(stat => [min, stat[1]]);
 
   const setCurrent: InputChangeEvent = ev => {
     let target = stat[1];
@@ -43,40 +35,38 @@ export function useStat(
     target: { type: "number", value: stat[1], min, max, onChange: setTarget }
   };
 
-  if (!owned) props.current.readOnly = true;
-
   return props;
 }
 
-export function useStats(owned: boolean, oldServant: AccountServant) {
-  const ascension = useStat(0, 4, owned, [
+export function useStats(oldServant: AccountServant) {
+  const ascension = useStat(0, 4, [
     oldServant.stats[ServantStat.ASCENSION_CURRENT],
     oldServant.stats[ServantStat.ASCENSION_TARGET]
   ]);
   const skills = [
-    useStat(1, 10, owned, [
+    useStat(1, 10, [
       oldServant.stats[ServantStat.SKILL1_CURRENT],
       oldServant.stats[ServantStat.SKILL1_TARGET]
     ]),
-    useStat(1, 10, owned, [
+    useStat(1, 10, [
       oldServant.stats[ServantStat.SKILL2_CURRENT],
       oldServant.stats[ServantStat.SKILL2_TARGET]
     ]),
-    useStat(1, 10, owned, [
+    useStat(1, 10, [
       oldServant.stats[ServantStat.SKILL3_CURRENT],
       oldServant.stats[ServantStat.SKILL3_TARGET]
     ])
   ];
   const appends = [
-    useStat(1, 10, owned, [
+    useStat(1, 10, [
       oldServant.stats[ServantStat.APPEND1_CURRENT],
       oldServant.stats[ServantStat.APPEND1_TARGET]
     ]),
-    useStat(1, 10, owned, [
+    useStat(1, 10, [
       oldServant.stats[ServantStat.APPEND2_CURRENT],
       oldServant.stats[ServantStat.APPEND2_TARGET]
     ]),
-    useStat(1, 10, owned, [
+    useStat(1, 10, [
       oldServant.stats[ServantStat.APPEND3_CURRENT],
       oldServant.stats[ServantStat.APPEND3_TARGET]
     ])
