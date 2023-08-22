@@ -1,5 +1,7 @@
 import { clamp } from "@foxkit/util/clamp";
 import { useState } from "preact/hooks";
+import type { AccountServant } from "~/client/account";
+import { ServantStat } from "~/client/account";
 import type { ElementProps } from "~/components/jsx";
 
 export interface StatProps {
@@ -44,4 +46,41 @@ export function useStat(
   if (!owned) props.current.readOnly = true;
 
   return props;
+}
+
+export function useStats(owned: boolean, oldServant: AccountServant) {
+  const ascension = useStat(0, 4, owned, [
+    oldServant.stats[ServantStat.ASCENSION_CURRENT],
+    oldServant.stats[ServantStat.ASCENSION_TARGET]
+  ]);
+  const skills = [
+    useStat(1, 10, owned, [
+      oldServant.stats[ServantStat.SKILL1_CURRENT],
+      oldServant.stats[ServantStat.SKILL1_TARGET]
+    ]),
+    useStat(1, 10, owned, [
+      oldServant.stats[ServantStat.SKILL2_CURRENT],
+      oldServant.stats[ServantStat.SKILL2_TARGET]
+    ]),
+    useStat(1, 10, owned, [
+      oldServant.stats[ServantStat.SKILL3_CURRENT],
+      oldServant.stats[ServantStat.SKILL3_TARGET]
+    ])
+  ];
+  const appends = [
+    useStat(1, 10, owned, [
+      oldServant.stats[ServantStat.APPEND1_CURRENT],
+      oldServant.stats[ServantStat.APPEND1_TARGET]
+    ]),
+    useStat(1, 10, owned, [
+      oldServant.stats[ServantStat.APPEND2_CURRENT],
+      oldServant.stats[ServantStat.APPEND2_TARGET]
+    ]),
+    useStat(1, 10, owned, [
+      oldServant.stats[ServantStat.APPEND3_CURRENT],
+      oldServant.stats[ServantStat.APPEND3_TARGET]
+    ])
+  ];
+
+  return { ascension, skills, appends };
 }

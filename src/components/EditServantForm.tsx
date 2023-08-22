@@ -1,9 +1,9 @@
 import { useState } from "preact/hooks";
 import type { AccountServant } from "~/client/account";
-import { ServantStat, useAccount } from "~/client/account";
+import { useAccount } from "~/client/account";
 import { useServantsData } from "~/client/context";
 import type { StatProps } from "~/hooks/useStat";
-import { useStat } from "~/hooks/useStat";
+import { useStats } from "~/hooks/useStat";
 import { getSkillIconUrl } from "~/util/urls";
 import { ButtonField } from "./ButtonField";
 import { InputRadioControlled } from "./InputRadio";
@@ -72,51 +72,20 @@ const appendIcons = ["skill_00301.png", "skill_00601.png", "skill_00300.png"];
 export function EditServantForm({
   children,
   className,
-  servant,
+  servant: oldServant,
   ...props
 }: EditServantFormProps) {
   const servantsData = useServantsData();
   const user = useAccount()!;
-  const [owned, setOwned] = useState(servant.owned ?? servant.id === 1);
-  const ascension = useStat(0, 4, owned, [
-    servant.stats[ServantStat.ASCENSION_CURRENT],
-    servant.stats[ServantStat.ASCENSION_TARGET]
-  ]);
-  const skills = [
-    useStat(1, 10, owned, [
-      servant.stats[ServantStat.SKILL1_CURRENT],
-      servant.stats[ServantStat.SKILL1_TARGET]
-    ]),
-    useStat(1, 10, owned, [
-      servant.stats[ServantStat.SKILL2_CURRENT],
-      servant.stats[ServantStat.SKILL2_TARGET]
-    ]),
-    useStat(1, 10, owned, [
-      servant.stats[ServantStat.SKILL3_CURRENT],
-      servant.stats[ServantStat.SKILL3_TARGET]
-    ])
-  ];
-  const appends = [
-    useStat(1, 10, owned, [
-      servant.stats[ServantStat.APPEND1_CURRENT],
-      servant.stats[ServantStat.APPEND1_TARGET]
-    ]),
-    useStat(1, 10, owned, [
-      servant.stats[ServantStat.APPEND2_CURRENT],
-      servant.stats[ServantStat.APPEND2_TARGET]
-    ]),
-    useStat(1, 10, owned, [
-      servant.stats[ServantStat.APPEND3_CURRENT],
-      servant.stats[ServantStat.APPEND3_TARGET]
-    ])
-  ];
-  const servantData = servantsData[servant.id];
+  const [owned, setOwned] = useState(oldServant.owned ?? oldServant.id === 1);
+  const { ascension, skills, appends } = useStats(owned, oldServant);
+  const servantData = servantsData[oldServant.id];
   const skillIcons =
     user.region == "na"
       ? servantData.skillsNA || servantData.skills
       : servantData.skills;
   const possibleToOwn =
-    servant.id == 1 || servantData.na || user.region == "jp" || owned;
+    oldServant.id == 1 || servantData.na || user.region == "jp" || owned;
 
   return (
     <form
@@ -125,7 +94,7 @@ export function EditServantForm({
       className={cc([className])}>
       <fieldset style={{ flexBasis: "100%" }}>
         <legend>DEBUG</legend>
-        <span>{JSON.stringify(servant)}</span>
+        <span>{JSON.stringify(oldServant)}</span>
       </fieldset>
       <fieldset>
         <legend>Owned</legend>
@@ -138,7 +107,7 @@ export function EditServantForm({
             Yes
           </InputRadioControlled>
         )}
-        {servant.id != 1 && (
+        {oldServant.id != 1 && (
           <InputRadioControlled
             name="owned"
             value="false"
