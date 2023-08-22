@@ -22,6 +22,10 @@
   }
 }
 
+.field.radio {
+  gap: 0px; /* gap is managed by semi-invisible radio inputs */
+}
+
 .fieldgroup {
   flex-basis: 100%;
   display: flex;

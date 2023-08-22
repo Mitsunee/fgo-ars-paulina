@@ -22,7 +22,7 @@ export interface ServantData {
   skills: Tuple<string, 3>;
   skillsNA?: Tuple<string, 3>;
   mats: ServantMaterials;
-  costumes?: PartialDataMap<string>;
+  costumes?: DataMap<string>;
   na?: true;
 }
 

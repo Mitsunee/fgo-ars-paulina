@@ -103,9 +103,18 @@ form {
   gap: 1.5rem 0.5rem;
 }
 
+form > h2 {
+  flex-basis: 100%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 form fieldset {
   min-width: min(100%, 420px);
   border: 0px;
+  &.wide {
+    width: 100%;
+  }
 }
 
 form fieldset,

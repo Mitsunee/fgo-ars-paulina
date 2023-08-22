@@ -2,9 +2,11 @@ import { useState } from "preact/hooks";
 import type { AccountServant } from "~/client/account";
 import { useAccount } from "~/client/account";
 import { useServantsData } from "~/client/context";
+import type { CostumeDispatch, CostumeState } from "~/hooks/useCostumes";
+import { useCostumes } from "~/hooks/useCostumes";
 import type { StatProps } from "~/hooks/useStat";
 import { useStats } from "~/hooks/useStat";
-import { getSkillIconUrl } from "~/util/urls";
+import { getServantIconUrl, getSkillIconUrl } from "~/util/urls";
 import { ButtonField } from "./ButtonField";
 import { InputRadioControlled } from "./InputRadio";
 import type { ElementProps, WithCC } from "./jsx";
@@ -67,6 +69,57 @@ function SkillsField({
   );
 }
 
+interface CostumeFieldProps {
+  name: string;
+  icon: string;
+  state: CostumeState;
+  set: CostumeDispatch;
+  owned: boolean;
+}
+
+function CostumeField({ name, icon, state, set, owned }: CostumeFieldProps) {
+  const inputName = `costume-${state.id}`;
+  const handleClick = (value: null | boolean) => set({ id: state.id, value });
+  return (
+    <fieldset className={cc([styles.field, styles.radio])}>
+      <legend>{name}</legend>
+      <img
+        src={getServantIconUrl(icon, true)}
+        alt={name}
+        width={48}
+        height={48}
+        loading="lazy"
+      />
+      <InputRadioControlled
+        name={inputName}
+        value="skipped"
+        checked={state.state === null || !owned}
+        onClick={() => handleClick(null)}
+        readOnly={!owned}>
+        Skipped
+      </InputRadioControlled>
+      {owned && (
+        <>
+          <InputRadioControlled
+            name={inputName}
+            value="planned"
+            checked={state.state === false}
+            onClick={() => handleClick(false)}>
+            Planned
+          </InputRadioControlled>
+          <InputRadioControlled
+            name={inputName}
+            value="done"
+            checked={state.state == true}
+            onClick={() => handleClick(true)}>
+            Done
+          </InputRadioControlled>
+        </>
+      )}
+    </fieldset>
+  );
+}
+
 const appendIcons = ["skill_00301.png", "skill_00601.png", "skill_00300.png"];
 
 export function EditServantForm({
@@ -76,10 +129,15 @@ export function EditServantForm({
   ...props
 }: EditServantFormProps) {
   const servantsData = useServantsData();
+  const servantData = servantsData[oldServant.id];
+  const costumesData = servantData.costumes; // need to extract this to help typescript's bad short term memory in the JSX lol
   const user = useAccount()!;
   const [owned, setOwned] = useState(oldServant.owned ?? oldServant.id === 1);
   const { ascension, skills, appends } = useStats(owned, oldServant);
-  const servantData = servantsData[oldServant.id];
+  const [costumeIds, costumes, setCostume] = useCostumes(
+    costumesData,
+    oldServant.costume
+  );
   const skillIcons =
     user.region == "na"
       ? servantData.skillsNA || servantData.skills
@@ -92,10 +150,11 @@ export function EditServantForm({
       onSubmit={ev => ev.preventDefault()}
       {...props}
       className={cc([className])}>
-      <fieldset style={{ flexBasis: "100%" }}>
-        <legend>DEBUG</legend>
+      {/* <h2>Debug</h2>
+      <fieldset className="wide">
+        <legend>Old Servant</legend>
         <span>{JSON.stringify(oldServant)}</span>
-      </fieldset>
+      </fieldset> */}
       <fieldset>
         <legend>Owned</legend>
         {possibleToOwn && (
@@ -123,8 +182,25 @@ export function EditServantForm({
         title="Ascension"
         id="ascension"
       />
+      {/* TODO: implement priority system here */}
+      <h2>Skills</h2>
       <SkillsField skills={skills} icons={skillIcons} />
       <SkillsField skills={appends} icons={appendIcons} append />
+      {costumes && costumesData && (
+        <>
+          <h2>Costumes</h2>
+          {costumeIds.map(id => (
+            <CostumeField
+              key={id}
+              name={costumesData[id]}
+              icon={servantData.icons[id]}
+              state={costumes[id]}
+              set={setCostume}
+              owned={owned}
+            />
+          ))}
+        </>
+      )}
       <ButtonField>{children}</ButtonField>
     </form>
   );
