@@ -51,28 +51,25 @@ function CostumeField({
       <InputRadioControlled
         name={inputName}
         value="skipped"
-        checked={state.state === null || !unlockable}
-        onClick={() => handleClick(null)}
-        disabled={!unlockable}>
+        checked={state.state === null}
+        onClick={() => handleClick(null)}>
         Skipped
       </InputRadioControlled>
+      <InputRadioControlled
+        name={inputName}
+        value="planned"
+        checked={state.state === false || (!unlockable && state.state == true)}
+        onClick={() => handleClick(false)}>
+        Planned
+      </InputRadioControlled>
       {unlockable && (
-        <>
-          <InputRadioControlled
-            name={inputName}
-            value="planned"
-            checked={state.state === false}
-            onClick={() => handleClick(false)}>
-            Planned
-          </InputRadioControlled>
-          <InputRadioControlled
-            name={inputName}
-            value="done"
-            checked={state.state == true}
-            onClick={() => handleClick(true)}>
-            Done
-          </InputRadioControlled>
-        </>
+        <InputRadioControlled
+          name={inputName}
+          value="done"
+          checked={state.state == true}
+          onClick={() => handleClick(true)}>
+          Done
+        </InputRadioControlled>
       )}
     </fieldset>
   );
