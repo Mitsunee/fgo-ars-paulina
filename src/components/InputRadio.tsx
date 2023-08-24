@@ -31,6 +31,7 @@ export function InputRadioControlled({
         type="radio"
         name={name}
         value={value}
+        id={id}
         onChange={props.onClick}
         checked={checked}
         className="button"
