@@ -1,7 +1,6 @@
 import type { StatProps } from "~/hooks/useStat";
 import { getSkillIconUrl } from "~/util/urls";
 import { StatField } from "./StatField";
-import styles from "./styles";
 
 interface SkillsFieldProps {
   skills: StatProps[];
@@ -17,7 +16,7 @@ export function SkillsField({
   owned
 }: SkillsFieldProps) {
   return (
-    <div className={styles.fieldgroup}>
+    <>
       {skills.map((skill, idx) => {
         const icon = getSkillIconUrl(icons[idx]);
         const num = idx + 1;
@@ -33,6 +32,6 @@ export function SkillsField({
           />
         );
       })}
-    </div>
+    </>
   );
 }

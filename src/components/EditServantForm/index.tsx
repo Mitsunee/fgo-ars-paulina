@@ -11,6 +11,7 @@ import { useStats } from "~/hooks/useStat";
 import { CostumeField } from "./CostumeField";
 import { SkillsField } from "./SkillsField";
 import { StatField } from "./StatField";
+import styles from "./styles";
 
 interface EditServantFormProps extends WithCC<ElementProps<"form">> {
   servant: AccountServant;
@@ -81,21 +82,30 @@ export function EditServantForm({
       />
       {/* TODO: implement priority system here */}
       <h2>Skills</h2>
-      <SkillsField skills={skills} icons={skillIcons} owned={owned} />
-      <SkillsField skills={appends} icons={appendIcons} owned={owned} append />
+      <div className={styles.fieldgroup}>
+        <SkillsField skills={skills} icons={skillIcons} owned={owned} />
+        <SkillsField
+          skills={appends}
+          icons={appendIcons}
+          owned={owned}
+          append
+        />
+      </div>
       {costumes && costumesData && (
         <>
           <h2>Costumes</h2>
-          {costumeIds.map(id => (
-            <CostumeField
-              key={id}
-              name={costumesData[id]}
-              icon={servantData.icons[id]}
-              state={costumes[id]}
-              set={setCostume}
-              owned={owned}
-            />
-          ))}
+          <div className={styles.fieldgroup}>
+            {costumeIds.map(id => (
+              <CostumeField
+                key={id}
+                name={costumesData[id]}
+                icon={servantData.icons[id]}
+                state={costumes[id]}
+                set={setCostume}
+                owned={owned}
+              />
+            ))}
+          </div>
         </>
       )}
       <ButtonField>{children}</ButtonField>
