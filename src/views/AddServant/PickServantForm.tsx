@@ -9,7 +9,6 @@ import { InputRadio } from "~/components/InputRadio";
 import { ServantClass } from "~/data/ServantClass";
 import type { ServantData } from "~/data/servants";
 import { getServantIconUrl } from "~/util/urls";
-import styles from "./PickServantForm.module.css";
 
 export interface FiltersState {
   menu: boolean;
@@ -188,7 +187,7 @@ export function PickServantForm({
           </fieldset>
         </>
       )}
-      <div className={styles.list}>
+      <div className="icon-list">
         {result.map(servant => {
           if (servant.id == 1) return null;
           const icon = getServantIconUrl(servant.icons["1"], true);

@@ -208,3 +208,25 @@ input[type="radio"].button {
     background-color: var(--shaded);
   }
 }
+
+.icon-list {
+  display: flex;
+  flex-basis: 100%;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  & button,
+  & label {
+    max-width: 100%;
+    background-color: transparent;
+    border-radius: 0px;
+    padding: 0px;
+  }
+
+  & button > img,
+  & label > img {
+    max-width: 100%;
+  }
+}
