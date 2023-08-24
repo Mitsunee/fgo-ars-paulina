@@ -108,7 +108,7 @@ export function PickServantForm({
           type="search"
           name="servant-search"
           value={query}
-          onChange={ev => setQuery(ev.currentTarget.value)}
+          onInput={ev => setQuery(ev.currentTarget.value)}
           placeholder="Search"
         />
         <ArrowButton
