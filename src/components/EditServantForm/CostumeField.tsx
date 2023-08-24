@@ -36,7 +36,7 @@ export function CostumeField({
         value="skipped"
         checked={state.state === null || !owned}
         onClick={() => handleClick(null)}
-        readOnly={!owned}>
+        disabled={!owned}>
         Skipped
       </InputRadioControlled>
       {owned && (

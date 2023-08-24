@@ -142,7 +142,8 @@ input[type="number"] {
     border-bottom-color: var(--accent);
   }
 
-  &:read-only {
+  &:read-only,
+  &:disabled {
     color: rgb(248, 237, 240, 50%);
     cursor: default;
   }
@@ -165,7 +166,8 @@ button,
     background-color: var(--primary);
   }
 
-  &.shaded {
+  &.shaded,
+  &:disabled {
     background-color: var(--shaded);
   }
 
@@ -200,5 +202,9 @@ input[type="radio"].button {
 
   &:checked + label {
     background-color: var(--primary);
+  }
+
+  &:disabled + label {
+    background-color: var(--shaded);
   }
 }

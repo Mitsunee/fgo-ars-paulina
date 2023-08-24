@@ -68,7 +68,8 @@ export function EditServantForm({
             name="owned"
             value="false"
             onClick={() => setOwned(false)}
-            checked={!owned}>
+            checked={!owned}
+            disabled={!possibleToOwn}>
             No
           </InputRadioControlled>
         )}

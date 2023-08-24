@@ -21,6 +21,7 @@ export function InputRadioControlled({
   name,
   value,
   checked,
+  disabled,
   ...props
 }: InputRadioControlledProps) {
   const id = `${name}-${value}`;
@@ -35,6 +36,7 @@ export function InputRadioControlled({
         onChange={props.onClick}
         checked={checked}
         className="button"
+        disabled={disabled ? true : undefined}
       />
       <label {...props} className={cc([className])} htmlFor={id}>
         {children}
