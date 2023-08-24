@@ -10,7 +10,7 @@ import { cc } from "~/components/jsx";
 import { useCostumes } from "~/hooks/useCostumes";
 import { useStats } from "~/hooks/useStat";
 import { getServantIconUrl } from "~/util/urls";
-import { CostumeField } from "./CostumeField";
+import { CostumesField } from "./CostumesField";
 import { SkillsField } from "./SkillsField";
 import { StatField } from "./StatField";
 import styles from "./styles";
@@ -103,18 +103,14 @@ export function EditServantForm({
       {costumes && costumesData && (
         <>
           <h2>Costumes</h2>
-          <div className={styles.fieldgroup}>
-            {costumeIds.map(id => (
-              <CostumeField
-                key={id}
-                name={costumesData[id]}
-                icon={servantData.icons[id]}
-                state={costumes[id]}
-                set={setCostume}
-                owned={owned}
-              />
-            ))}
-          </div>
+          <CostumesField
+            ids={costumeIds}
+            costumes={costumes}
+            data={costumesData}
+            icons={servantData.icons}
+            set={setCostume}
+            unlockable={owned && currentAsc == 4}
+          />
         </>
       )}
       <h2>Icon</h2>

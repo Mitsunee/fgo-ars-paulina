@@ -9,15 +9,32 @@ interface CostumeFieldProps {
   icon: string;
   state: CostumeState;
   set: CostumeDispatch;
-  owned: boolean;
+  unlockable: boolean;
 }
 
-export function CostumeField({
+interface CostumesFieldProps
+  extends Pick<CostumeFieldProps, "set" | "unlockable"> {
+  ids: `${number}`[];
+  /**
+   * Map of CostumeStates from useCostumes
+   */
+  costumes: DataMap<CostumeState>;
+  /**
+   * Map of costume names i.e. servantData.costumes
+   */
+  data: DataMap<string>;
+  /**
+   * Map of servant icon urls i.e. servantData.icons
+   */
+  icons: DataMap<string>;
+}
+
+function CostumeField({
   name,
   icon,
   state,
   set,
-  owned
+  unlockable
 }: CostumeFieldProps) {
   const inputName = `costume-${state.id}`;
   const handleClick = (value: null | boolean) => set({ id: state.id, value });
@@ -34,12 +51,12 @@ export function CostumeField({
       <InputRadioControlled
         name={inputName}
         value="skipped"
-        checked={state.state === null || !owned}
+        checked={state.state === null || !unlockable}
         onClick={() => handleClick(null)}
-        disabled={!owned}>
+        disabled={!unlockable}>
         Skipped
       </InputRadioControlled>
-      {owned && (
+      {unlockable && (
         <>
           <InputRadioControlled
             name={inputName}
@@ -58,5 +75,29 @@ export function CostumeField({
         </>
       )}
     </fieldset>
+  );
+}
+
+export function CostumesField({
+  ids,
+  data,
+  icons,
+  costumes,
+  set,
+  unlockable
+}: CostumesFieldProps) {
+  return (
+    <div className={styles.fieldgroup}>
+      {ids.map(id => (
+        <CostumeField
+          key={id}
+          name={data[id]}
+          icon={icons[id]}
+          state={costumes[id]}
+          set={set}
+          unlockable={unlockable}
+        />
+      ))}
+    </div>
   );
 }

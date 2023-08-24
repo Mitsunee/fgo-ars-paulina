@@ -229,4 +229,12 @@ input[type="radio"].button {
   & label > img {
     max-width: 100%;
   }
+
+  & label {
+    border-bottom: 1px solid transparent;
+
+    &:hover {
+      border-bottom-color: var(--accent);
+    }
+  }
 }
