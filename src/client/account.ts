@@ -38,6 +38,7 @@ export interface AccountServant {
    */
   costume?: PartialDataMap<boolean | null>;
   owned?: boolean;
+  icon?: string;
 }
 
 export interface AccountData {

@@ -1,0 +1,14 @@
+.input {
+  display: inline-block;
+  width: 0px;
+  height: 0px;
+
+  &:not(:checked) + label img:not(:hover) {
+    opacity: 0.5;
+  }
+
+  & label,
+  & img {
+    max-width: 100%;
+  }
+}
