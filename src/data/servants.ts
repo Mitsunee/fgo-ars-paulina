@@ -11,7 +11,7 @@ export interface ServantMaterials {
   skill: EnhancementStage[];
   append: EnhancementStage[];
   ascension?: EnhancementStage[];
-  costume?: PartialDataMap<EnhancementStage>;
+  costume?: DataMap<EnhancementStage>;
 }
 
 export interface ServantData {

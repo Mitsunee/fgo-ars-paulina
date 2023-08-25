@@ -4,6 +4,7 @@ import { useServantsData } from "~/client/context";
 import { returnHome } from "~/client/router";
 import { EditServantForm } from "~/components/EditServantForm";
 import { getEditedServant } from "~/components/EditServantForm/getEditedServant";
+import { MaterialInfoSection } from "./MaterialInfoSection";
 import { PickServantForm, useFilters } from "./PickServantForm";
 
 export function AddServantView() {
@@ -17,36 +18,39 @@ export function AddServantView() {
   const [filters, setFilters] = useFilters();
 
   return (
-    <section className="section">
-      <h1>{servantData ? `Adding ${servantData.name}` : `Add Servant`}</h1>
-      {servantData && servant ? (
-        <EditServantForm servant={servant}>
-          <button
-            type="submit"
-            className="primary"
-            onClick={ev => {
-              const form = ev.currentTarget.form!;
-              const newServant = getEditedServant(servantData, form);
-              addServant(newServant);
-              returnHome();
-            }}>
-            Add Servant
-          </button>
-          <button type="button" onClick={() => setServant(null)}>
-            Add other Servant
-          </button>
-          <button type="button" onClick={() => returnHome()}>
-            Cancel
-          </button>
-        </EditServantForm>
-      ) : (
-        <PickServantForm
-          data={servantsData}
-          set={setServant}
-          filters={filters}
-          setFilters={setFilters}
-        />
-      )}
-    </section>
+    <>
+      <section className="section">
+        <h1>{servantData ? `Adding ${servantData.name}` : `Add Servant`}</h1>
+        {servantData && servant ? (
+          <EditServantForm servant={servant}>
+            <button
+              type="submit"
+              className="primary"
+              onClick={ev => {
+                const form = ev.currentTarget.form!;
+                const newServant = getEditedServant(servantData, form);
+                addServant(newServant);
+                returnHome();
+              }}>
+              Add Servant
+            </button>
+            <button type="button" onClick={() => setServant(null)}>
+              Add other Servant
+            </button>
+            <button type="button" onClick={() => returnHome()}>
+              Cancel
+            </button>
+          </EditServantForm>
+        ) : (
+          <PickServantForm
+            data={servantsData}
+            set={setServant}
+            filters={filters}
+            setFilters={setFilters}
+          />
+        )}
+      </section>
+      {servantData && <MaterialInfoSection servant={servantData} />}
+    </>
   );
 }
