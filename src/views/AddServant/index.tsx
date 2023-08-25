@@ -1,8 +1,9 @@
 import { useMemo, useState } from "preact/hooks";
-import { createServant } from "~/client/account";
+import { addServant, createServant } from "~/client/account";
 import { useServantsData } from "~/client/context";
 import { returnHome } from "~/client/router";
 import { EditServantForm } from "~/components/EditServantForm";
+import { getEditedServant } from "~/components/EditServantForm/getEditedServant";
 import { PickServantForm, useFilters } from "./PickServantForm";
 
 export function AddServantView() {
@@ -20,6 +21,17 @@ export function AddServantView() {
       <h1>{servantData ? `Adding ${servantData.name}` : `Add Servant`}</h1>
       {servantData && servant ? (
         <EditServantForm servant={servant}>
+          <button
+            type="submit"
+            className="primary"
+            onClick={ev => {
+              const form = ev.currentTarget.form!;
+              const newServant = getEditedServant(servantData, form);
+              addServant(newServant);
+              returnHome();
+            }}>
+            Add Servant
+          </button>
           <button type="button" onClick={() => setServant(null)}>
             Add other Servant
           </button>

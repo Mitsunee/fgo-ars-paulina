@@ -117,6 +117,25 @@ export function createServant(data: ServantData): AccountServant {
   return servant;
 }
 
+export function addServant(servant: AccountServant, idx?: number) {
+  const oldAccount = accountStore.get();
+  if (!oldAccount)
+    throw new Error("Cannot set servant as no account is selected");
+
+  const account: AccountData = {
+    ...oldAccount,
+    servants: [...oldAccount.servants]
+  };
+  if (typeof idx == "number") {
+    account.servants[idx] = servant;
+  } else {
+    account.servants.push(servant);
+  }
+
+  saveAccount(account);
+  accountStore.set(account);
+}
+
 export function createAccount(name: string, region: "na" | "jp", fc: string) {
   const account: AccountData = {
     name,
