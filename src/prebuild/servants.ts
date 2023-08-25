@@ -90,6 +90,9 @@ function getServantMats(servant: ServantWithLore) {
   const mats: ServantMaterials = {
     skill: Object.values(servant.skillMaterials).map(stage =>
       flattenEnhancementStage(stage)
+    ),
+    append: Object.values(servant.appendSkillMaterials).map(stage =>
+      flattenEnhancementStage(stage)
     )
   };
 

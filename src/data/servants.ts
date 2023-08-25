@@ -9,6 +9,7 @@ export interface EnhancementStage {
 
 export interface ServantMaterials {
   skill: EnhancementStage[];
+  append: EnhancementStage[];
   ascension?: EnhancementStage[];
   costume?: PartialDataMap<EnhancementStage>;
 }
