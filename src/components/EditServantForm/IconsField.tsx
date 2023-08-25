@@ -44,7 +44,7 @@ export function IconsField({
       <ButtonField>
         <InputRadioControlled
           name="selected-icon"
-          value=""
+          value="auto"
           checked={active === undefined}
           onClick={() => set(undefined)}>
           Match Ascension Stage
