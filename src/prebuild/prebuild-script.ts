@@ -75,7 +75,7 @@ function filterServantList(list: ServantWithLore[]) {
 
   // format info
   const info: BuildInfo = {
-    dataVer: "0.1.2",
+    dataVer: "0.1.3",
     date: Date.now(),
     JP: apiInfo.JP.timestamp,
     NA: apiInfo.NA.timestamp

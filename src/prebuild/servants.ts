@@ -72,9 +72,9 @@ function getSkillIcons(skills: ServantWithLore["skills"]) {
 }
 
 function flattenItemAmounts(amounts: ItemAmount[]) {
-  return amounts.map(
-    ({ amount, item }) => [item.id, amount] as Tuple<number, 2>
-  );
+  return amounts
+    .filter(({ item }) => item.type !== ItemType.EVENT_ITEM)
+    .map(({ amount, item }) => [item.id, amount] as Tuple<number, 2>);
 }
 
 function flattenEnhancementStage(stage: EntityLevelUpMaterials) {
@@ -96,12 +96,8 @@ function getServantMats(servant: ServantWithLore) {
     )
   };
 
-  if (
-    // skip mash
-    servant.id !== 800100 &&
-    // peek check if stage 1 uses an event item, i.e. servant is welfare
-    servant.ascensionMaterials["0"]?.items[0].item.type !== ItemType.EVENT_ITEM
-  ) {
+  // skip mash
+  if (servant.id !== 800100) {
     mats.ascension = Object.values(servant.ascensionMaterials).map(stage =>
       flattenEnhancementStage(stage)
     );
