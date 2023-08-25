@@ -16,7 +16,9 @@ export function useStat(min: number, max: number, initial: [number, number]) {
 
   const setCurrent: InputChangeEvent = ev => {
     let target = stat[1];
-    const value = ev.currentTarget.valueAsNumber;
+    const value = isNaN(ev.currentTarget.valueAsNumber)
+      ? min
+      : Math.trunc(ev.currentTarget.valueAsNumber);
     const current = clamp({ min, max, value });
     if (current > target) target = current;
     setStat([current, target]);
@@ -24,7 +26,9 @@ export function useStat(min: number, max: number, initial: [number, number]) {
 
   const setTarget: InputChangeEvent = ev => {
     let current = stat[0];
-    const value = ev.currentTarget.valueAsNumber;
+    const value = isNaN(ev.currentTarget.valueAsNumber)
+      ? max
+      : Math.trunc(ev.currentTarget.valueAsNumber);
     const target = clamp({ min, max, value });
     if (target < current) current = target;
     setStat([current, target]);
