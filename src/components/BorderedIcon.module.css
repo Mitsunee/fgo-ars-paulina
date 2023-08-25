@@ -1,0 +1,66 @@
+.icon {
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  min-width: 0px;
+  max-width: 100%;
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  background-size: cover;
+
+  &:not(:first-child) {
+    margin-left: 0.5ch;
+  }
+
+  &.black {
+    border-color: var(--black);
+    background-image: url("/assets/backgrounds/material_bg_zero.png");
+  }
+
+  &.bronze {
+    border-color: #7d583b;
+    background-image: url("/assets/backgrounds/material_bg_bronze.png");
+  }
+
+  &.silver {
+    border-color: #c1c1c1;
+    background-image: url("/assets/backgrounds/material_bg_silver.png");
+  }
+
+  &.gold {
+    border-color: #f0ce02;
+    background-image: url("/assets/backgrounds/material_bg_gold.png");
+  }
+
+  &.blue {
+    border-color: #5aa8c3;
+    background-image: url("/assets/backgrounds/material_bg_blue.png");
+  }
+
+  & > img {
+    display: block;
+    object-fit: cover;
+    max-width: 100%;
+    aspect-ratio: 1;
+  }
+
+  & > figcaption {
+    position: absolute;
+    right: 0.25rem;
+    bottom: 0.2rem;
+    max-width: calc(100% - 0.5rem);
+    font-size: 12px;
+    font-weight: bold;
+    text-overflow: clip;
+    overflow: visible;
+    white-space: nowrap;
+    text-shadow:
+      1px 1px var(--black),
+      1px -1px var(--black),
+      -1px 1px var(--black),
+      -1px -1px var(--black),
+      1px 1px 3px var(--black);
+  }
+}
