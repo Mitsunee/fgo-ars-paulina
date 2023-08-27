@@ -1,9 +1,4 @@
 .arrow {
-  color: inherit;
-  fill: currentColor;
-  height: 0.8em;
-  width: auto;
-  aspect-ratio: 1;
   transform: rotate(var(--rot, 0deg));
 
   &:first-child {

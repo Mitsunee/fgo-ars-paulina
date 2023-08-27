@@ -10,7 +10,7 @@ interface ArrowProps {
 interface ArrowButtonProps extends WithCC<ElementProps<"button">> {
   state: boolean;
   set: (v: boolean) => void;
-  children: string;
+  children?: string;
   side?: "left" | "right";
 }
 
@@ -23,7 +23,7 @@ function Arrow({ side, active }: ArrowProps) {
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      className={styles.arrow}
+      className={cc(["svg", styles.arrow])}
       style={{ "--rot": rot } as CSSProperties}>
       <path d="M12 3l12 18h-24z" />
     </svg>
@@ -45,7 +45,7 @@ export function ArrowButton({
       className={cc([className])}
       onClick={() => set(!state)}>
       {side == "left" && <Arrow active={state} side="left" />}
-      <span>{children}</span>
+      {children && <span>{children}</span>}
       {side == "right" && <Arrow active={state} side="right" />}
     </button>
   );
