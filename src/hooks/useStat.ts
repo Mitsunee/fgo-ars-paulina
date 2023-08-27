@@ -62,15 +62,15 @@ export function useStats(oldServant: AccountServant) {
     ])
   ];
   const appends = [
-    useStat(1, 10, [
+    useStat(0, 10, [
       oldServant.stats[ServantStat.APPEND1_CURRENT],
       oldServant.stats[ServantStat.APPEND1_TARGET]
     ]),
-    useStat(1, 10, [
+    useStat(0, 10, [
       oldServant.stats[ServantStat.APPEND2_CURRENT],
       oldServant.stats[ServantStat.APPEND2_TARGET]
     ]),
-    useStat(1, 10, [
+    useStat(0, 10, [
       oldServant.stats[ServantStat.APPEND3_CURRENT],
       oldServant.stats[ServantStat.APPEND3_TARGET]
     ])

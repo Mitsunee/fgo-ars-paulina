@@ -104,7 +104,7 @@ export function saveAccount(data: AccountData) {
 export function createServant(data: ServantData): AccountServant {
   const servant: AccountServant = {
     id: data.id,
-    stats: [0, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1]
+    stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0]
   };
 
   if (data.na) {
@@ -145,7 +145,7 @@ export function createAccount(name: string, region: "na" | "jp", fc: string) {
     servants: [
       {
         id: 1,
-        stats: [1, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1],
+        stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0],
         owned: true
       }
     ]
