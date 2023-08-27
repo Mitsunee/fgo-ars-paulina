@@ -238,3 +238,12 @@ input[type="radio"].button {
     }
   }
 }
+
+.svg {
+  color: inherit;
+  fill: currentColor;
+  height: 0.8em;
+  width: auto;
+  vertical-align: -0.1em;
+  aspect-ratio: 1;
+}

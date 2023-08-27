@@ -1,0 +1,18 @@
+.button:not(.round) {
+  & > svg:first-child {
+    margin-right: 0.5ch;
+  }
+  & > svg:last-child {
+    margin-left: 0.5ch;
+  }
+}
+
+.round {
+  border-radius: 50%;
+  border: 0px;
+  padding: 0.5rem;
+
+  & > svg {
+    height: 1.2rem;
+  }
+}
