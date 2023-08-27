@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/preact";
 import { atom, onMount } from "nanostores";
 import type { ServantData } from "~/data/servants";
+import { getServantIconUrl } from "~/util/urls";
 
 export const accountDataVer = "0.0.1"; // will be used in the future to migrate accounts to new data versions
 
@@ -134,6 +135,17 @@ export function addServant(servant: AccountServant, idx?: number) {
 
   saveAccount(account);
   accountStore.set(account);
+}
+
+export function getAccountServantIcon(
+  servant: AccountServant,
+  icons: DataMap<string>,
+  bordered?: boolean
+) {
+  const asc = +servant.stats[ServantStat.ASCENSION_CURRENT];
+  const byAsc = asc < 2 ? asc + 1 : asc;
+  const icon = icons[servant.icon ? +servant.icon : byAsc];
+  return getServantIconUrl(icon, bordered);
 }
 
 export function createAccount(name: string, region: "na" | "jp", fc: string) {

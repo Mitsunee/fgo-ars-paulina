@@ -1,0 +1,22 @@
+.list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-flow: dense;
+  gap: 1rem;
+  justify-content: center;
+  list-style: none;
+  padding: 0px;
+
+  @media (--mq-small) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (--mq-medium) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (--mq-large) {
+    grid-template-columns: repeat(auto-fit, 18rem);
+  }
+}

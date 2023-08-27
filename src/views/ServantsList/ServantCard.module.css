@@ -1,0 +1,60 @@
+.card {
+  background-color: var(--secondary);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.33rem;
+  padding: 0.5rem;
+  overflow: hidden;
+
+  & h2 {
+    display: block;
+    width: 100%;
+    margin: 0px;
+    padding: 0.33rem;
+    font-size: 1rem;
+    text-align: center;
+
+    @media (--mq-medium) {
+      padding: 0.5rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  & > img {
+    width: 142px;
+    max-width: 90%;
+    height: auto;
+  }
+
+  &.sel {
+    border-color: var(--accent);
+    & h2 {
+      color: var(--accent);
+    }
+  }
+
+  & span {
+    & img {
+      display: inline-block;
+      height: 1em;
+      width: 1em;
+      margin: 0 0.5ch 0 0.1em;
+      vertical-align: -0.1em;
+    }
+
+    @media (--mq-only-small) {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.info {
+  grid-column: 1 / -1;
+  background-color: var(--secondary);
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
