@@ -127,7 +127,9 @@ form fieldset > legend {
 }
 
 input:focus-visible,
-button:focus-visible {
+button:focus-visible,
+dialog,
+.dialog {
   outline: 0px;
 }
 
@@ -246,4 +248,28 @@ input[type="radio"].button {
   width: auto;
   vertical-align: -0.1em;
   aspect-ratio: 1;
+}
+
+#modal-dialog:not([open]),
+.dialog:not([open]) {
+  display: none;
+}
+
+#modal-dialog,
+.dialog {
+  background: transparent;
+  border: 0px;
+  padding: 0px;
+  color: var(--text);
+  min-width: 50%;
+
+  & > section {
+    margin: 0px !important;
+    min-width: 50%;
+  }
+
+  &::backdrop,
+  & .backdrop {
+    background-color: rgb(9, 7, 7, 0.75);
+  }
 }
