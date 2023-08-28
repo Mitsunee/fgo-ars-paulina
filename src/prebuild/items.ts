@@ -26,6 +26,7 @@ export function apiItemToMaterial(item: Item, na?: true) {
     id: item.id,
     name: item.name,
     icon: item.icon,
+    priority: item.priority,
     rarity: parseMaterialRarity(item)
   };
 

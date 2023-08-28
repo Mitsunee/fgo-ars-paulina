@@ -6,6 +6,7 @@ export interface MaterialData {
   name: string;
   icon: string;
   rarity: Rarity;
+  priority: number;
   na?: true;
 }
 

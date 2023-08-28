@@ -8,7 +8,6 @@ import styles from "./ServantList.module.css";
 
 export function ServantListView() {
   const user = useAccount();
-  //const servantsData = useServantsData();
   const [selected, setSelected] = useState<number | undefined>();
 
   if (!user) return null;
@@ -19,7 +18,7 @@ export function ServantListView() {
       <ul className={styles.list}>
         {user.servants.map((servant, idx) => (
           <ServantCard
-            key={servant.id}
+            key={`${servant.id}-${idx}`}
             servant={servant}
             idx={idx}
             expanded={selected == idx}

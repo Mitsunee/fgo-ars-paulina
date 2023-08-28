@@ -55,6 +55,32 @@
 .info {
   grid-column: 1 / -1;
   background-color: var(--secondary);
-  border: 1px solid transparent;
-  border-radius: 8px;
+  margin: 0px;
+}
+
+.infoStats {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 1rem;
+  list-style: none;
+
+  & > li {
+    display: flex;
+    flex-basis: min(100%, 120px);
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 1rem;
+
+    & img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    & .done {
+      color: var(--accent);
+    }
+  }
 }

@@ -8,12 +8,31 @@ import {
   swapUpServant,
   useAccount
 } from "~/client/account";
-import { useServantsData } from "~/client/context";
+import { useMaterialList, useServantsData } from "~/client/context";
+import { BorderedIcon } from "~/components/BorderedIcon";
 import { ButtonRow } from "~/components/ButtonField";
 import { IconButton } from "~/components/IconButton";
 import { cc } from "~/components/jsx";
+import { appendIcons } from "~/data/appendIcons";
+import type { ServantData } from "~/data/servants";
 import { useModal } from "~/hooks/useModal";
+import { flattenServantNeeds } from "~/util/flattenServantNeeds";
+import { formatLongNumber } from "~/util/formatLongNumber";
+import { getSkillIconUrl } from "~/util/urls";
 import styles from "./ServantCard.module.css";
+
+interface StatItemProps {
+  title: string;
+  icon: string;
+  current: number;
+  target: number;
+  replaceZero?: true;
+}
+
+interface MaterialNeedsProps {
+  servant: AccountServant;
+  data: ServantData;
+}
 
 interface ServantCardProps {
   servant: AccountServant;
@@ -31,12 +50,77 @@ interface ServantCardProps {
   set: Dispatch<number | undefined>;
 }
 
+function StatItem({
+  title,
+  icon,
+  current,
+  target,
+  replaceZero
+}: StatItemProps) {
+  const zero = replaceZero ? "-" : "0";
+
+  return (
+    <li>
+      <img
+        src={icon}
+        alt=""
+        title={title}
+        width={48}
+        height={48}
+        loading="lazy"
+      />
+      <span className={cc([current == target && styles.done])}>
+        {`${current || zero} / ${target || zero}`}
+      </span>
+    </li>
+  );
+}
+
+function MaterialNeeds({ servant, data }: MaterialNeedsProps) {
+  const materialsData = useMaterialList();
+  const { qp, mats } = flattenServantNeeds(servant, data, materialsData);
+
+  if (qp == 0 && mats.length == 0) return null;
+
+  return (
+    <>
+      <h3>Needed Materials:</h3>
+      <ul>
+        {mats.map(({ id, amount }) => {
+          const mat = materialsData[id];
+          return (
+            <BorderedIcon
+              key={id}
+              src={mat.icon}
+              border={mat.rarity}
+              title={mat.name}>
+              x{amount}
+            </BorderedIcon>
+          );
+        })}
+        {qp > 0 && (
+          <BorderedIcon
+            src="https://static.atlasacademy.io/NA/Items/5.png"
+            border="blue"
+            title="QP">
+            <span title={`${qp.toLocaleString()}`}>{formatLongNumber(qp)}</span>
+          </BorderedIcon>
+        )}
+      </ul>
+    </>
+  );
+}
+
 export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
   const user = useAccount()!;
   const servantsData = useServantsData();
   const servantData = servantsData[servant.id];
   const activeIcon = getAccountServantIcon(servant, servantData.icons, true);
   const [dialog, createDialog, showDialog] = useModal();
+  const skillIcons =
+    user.region == "na"
+      ? servantData.skillsNA || servantData.skills
+      : servantData.skills;
 
   return (
     <>
@@ -110,10 +194,64 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
         </span>
       </li>
       {expanded && (
-        <li
-          // PLACEHOLDER
-          className={cc([styles.info])}>
-          <h2>PLACEHOLDER: {servantData.name}</h2>
+        <li className={cc(["section", styles.info])}>
+          <h2>{servantData.name}</h2>
+          <ul className={styles.infoStats}>
+            <StatItem
+              icon="https://static.atlasacademy.io/NA/Items/40.png"
+              title="Ascension"
+              current={servant.stats[ServantStat.ASCENSION_CURRENT]}
+              target={servant.stats[ServantStat.ASCENSION_TARGET]}
+            />
+            <StatItem
+              icon={getSkillIconUrl(skillIcons[0])}
+              title="Skill 1"
+              current={servant.stats[ServantStat.SKILL1_CURRENT]}
+              target={servant.stats[ServantStat.SKILL1_TARGET]}
+            />
+            <StatItem
+              icon={getSkillIconUrl(skillIcons[1])}
+              title="Skill 2"
+              current={servant.stats[ServantStat.SKILL2_CURRENT]}
+              target={servant.stats[ServantStat.SKILL2_TARGET]}
+            />
+            <StatItem
+              icon={getSkillIconUrl(skillIcons[2])}
+              title="Skill 3"
+              current={servant.stats[ServantStat.SKILL3_CURRENT]}
+              target={servant.stats[ServantStat.SKILL3_TARGET]}
+            />
+            <StatItem
+              icon={getSkillIconUrl(appendIcons[0])}
+              title="Append Skill 1"
+              current={servant.stats[ServantStat.APPEND1_CURRENT]}
+              target={servant.stats[ServantStat.APPEND1_TARGET]}
+              replaceZero
+            />
+            <StatItem
+              icon={getSkillIconUrl(appendIcons[1])}
+              title="Append Skill 2"
+              current={servant.stats[ServantStat.APPEND2_CURRENT]}
+              target={servant.stats[ServantStat.APPEND2_TARGET]}
+              replaceZero
+            />
+            <StatItem
+              icon={getSkillIconUrl(appendIcons[2])}
+              title="Append Skill 3"
+              current={servant.stats[ServantStat.APPEND3_CURRENT]}
+              target={servant.stats[ServantStat.APPEND3_TARGET]}
+              replaceZero
+            />
+          </ul>
+          <MaterialNeeds servant={servant} data={servantData} />
+          <ButtonRow>
+            <IconButton
+              className="primary"
+              icon="less"
+              onClick={() => set(undefined)}>
+              Close
+            </IconButton>
+          </ButtonRow>
         </li>
       )}
       {createDialog(

@@ -77,12 +77,7 @@ export function MaterialInfoSection({ servant }: MaterialInfoSectionProps) {
           {servant.mats.ascension ? (
             <MaterialInfoTable stages={servant.mats.ascension} />
           ) : (
-            `${servant.name} ${
-              servant.id == 1
-                ? "ascends through story progress."
-                : // FIXME: Still how QP for welfares
-                  "is a Welfare Servant who uses Event Items for ascension."
-            }`
+            `${servant.name} ascends through story progress."`
           )}
         </li>
         <li>

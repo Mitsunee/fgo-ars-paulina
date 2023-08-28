@@ -137,6 +137,7 @@ export function apiServantToServantData(
 
   if (servantNA) {
     servantData.na = true;
+    // TODO: small data size improvement: skip adding this to data if deepEquals JP skills
     servantData.skillsNA = getSkillIcons(servantNA.skills);
   }
 

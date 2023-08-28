@@ -16,6 +16,7 @@ function useApiEndpoint<T>(url: string) {
 
     (async () => {
       while (retries-- && !controller.signal.aborted) {
+        // TODO: find a way to invalidate using build info
         const res = await fetch(url, { cache: "default" });
         if (!res.ok) continue;
         if (!controller.signal.aborted) {

@@ -6,6 +6,7 @@ import { ButtonField } from "~/components/ButtonField";
 import { InputRadioControlled } from "~/components/InputRadio";
 import type { ElementProps, WithCC } from "~/components/jsx";
 import { cc } from "~/components/jsx";
+import { appendIcons } from "~/data/appendIcons";
 import { useCostumes } from "~/hooks/useCostumes";
 import { useStats } from "~/hooks/useStat";
 import { CostumesField } from "./CostumesField";
@@ -17,8 +18,6 @@ import styles from "./styles";
 interface EditServantFormProps extends WithCC<ElementProps<"form">> {
   servant: AccountServant;
 }
-
-const appendIcons = ["skill_00301.png", "skill_00601.png", "skill_00300.png"];
 
 export function EditServantForm({
   children,
