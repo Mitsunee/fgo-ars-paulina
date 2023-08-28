@@ -1,6 +1,7 @@
 import type { Dispatch } from "preact/hooks";
 import type { AccountServant } from "~/client/account";
 import {
+  deleteServant,
   getAccountServantIcon,
   ServantStat,
   swapDownServant,
@@ -11,6 +12,7 @@ import { useServantsData } from "~/client/context";
 import { ButtonRow } from "~/components/ButtonField";
 import { IconButton } from "~/components/IconButton";
 import { cc } from "~/components/jsx";
+import { useModal } from "~/hooks/useModal";
 import styles from "./ServantCard.module.css";
 
 interface ServantCardProps {
@@ -34,6 +36,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
   const servantsData = useServantsData();
   const servantData = servantsData[servant.id];
   const activeIcon = getAccountServantIcon(servant, servantData.icons, true);
+  const [dialog, createDialog, showDialog] = useModal();
 
   return (
     <>
@@ -55,12 +58,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
             icon={expanded ? "less" : "more"}
           />
           {servant.id != 1 && (
-            <IconButton
-              onClick={() => {
-                // TODO: deletion confirm modal
-              }}
-              icon="delete"
-            />
+            <IconButton onClick={() => showDialog()} icon="delete" />
           )}
           {idx < user.servants.length - 1 && (
             <IconButton
@@ -117,6 +115,28 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
           className={cc([styles.info])}>
           <h2>PLACEHOLDER: {servantData.name}</h2>
         </li>
+      )}
+      {createDialog(
+        <section className="section shaded">
+          <h2>Deleting {servantData.name}</h2>
+          <p>Are you sure you want to delete this Servant?</p>
+          <ButtonRow>
+            <button
+              type="button"
+              onClick={() => {
+                dialog.close();
+                deleteServant(idx);
+              }}>
+              Confirm
+            </button>
+            <button
+              type="button"
+              className="primary"
+              onClick={() => dialog.close()}>
+              Cancel
+            </button>
+          </ButtonRow>
+        </section>
       )}
     </>
   );

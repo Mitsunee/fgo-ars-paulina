@@ -189,6 +189,21 @@ export function swapDownServant(idx: number) {
   accountStore.set(account);
 }
 
+export function deleteServant(idx: number) {
+  const oldAccount = accountStore.get();
+  if (!oldAccount) {
+    throw new Error("Cannot delete servant as no account is selected");
+  }
+  if (oldAccount.servants[idx]?.id == 1) {
+    throw new Error("Do not delete Mash!");
+  }
+
+  const servants = oldAccount.servants.filter((_, i) => i != idx);
+  const account: AccountData = { ...oldAccount, servants };
+  saveAccount(account);
+  accountStore.set(account);
+}
+
 export function createAccount(name: string, region: "na" | "jp", fc: string) {
   const account: AccountData = {
     name,
