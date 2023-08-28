@@ -3,13 +3,15 @@ import type { AccountServant } from "~/client/account";
 import {
   getAccountServantIcon,
   ServantStat,
+  swapDownServant,
+  swapUpServant,
   useAccount
 } from "~/client/account";
 import { useServantsData } from "~/client/context";
-import { cc } from "~/components/jsx";
-import styles from "./ServantCard.module.css";
 import { ButtonRow } from "~/components/ButtonField";
 import { IconButton } from "~/components/IconButton";
+import { cc } from "~/components/jsx";
+import styles from "./ServantCard.module.css";
 
 interface ServantCardProps {
   servant: AccountServant;
@@ -37,16 +39,37 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
     <>
       <li className={cc([styles.card, expanded && styles.sel])}>
         <ButtonRow>
-          {idx > 0 && <IconButton onClick={() => {}} icon="left" />}
+          {idx > 0 && (
+            <IconButton
+              onClick={() => {
+                swapDownServant(idx);
+                set(undefined);
+              }}
+              icon="left"
+            />
+          )}
           <IconButton
             onClick={() => {
               set(expanded ? undefined : idx);
             }}
             icon={expanded ? "less" : "more"}
           />
-          {servant.id != 1 && <IconButton onClick={() => {}} icon="delete" />}
+          {servant.id != 1 && (
+            <IconButton
+              onClick={() => {
+                // TODO: deletion confirm modal
+              }}
+              icon="delete"
+            />
+          )}
           {idx < user.servants.length - 1 && (
-            <IconButton onClick={() => {}} icon="right" />
+            <IconButton
+              onClick={() => {
+                swapUpServant(idx);
+                set(undefined);
+              }}
+              icon="right"
+            />
           )}
         </ButtonRow>
         <img src={activeIcon} alt="" width={142} height={155} />

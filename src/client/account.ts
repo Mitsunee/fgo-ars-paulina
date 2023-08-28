@@ -120,8 +120,9 @@ export function createServant(data: ServantData): AccountServant {
 
 export function addServant(servant: AccountServant, idx?: number) {
   const oldAccount = accountStore.get();
-  if (!oldAccount)
+  if (!oldAccount) {
     throw new Error("Cannot set servant as no account is selected");
+  }
 
   const account: AccountData = {
     ...oldAccount,
@@ -146,6 +147,46 @@ export function getAccountServantIcon(
   const byAsc = asc < 2 ? asc + 1 : asc;
   const icon = icons[servant.icon ? +servant.icon : byAsc];
   return getServantIconUrl(icon, bordered);
+}
+
+export function swapUpServant(idx: number) {
+  const oldAccount = accountStore.get();
+  if (!oldAccount) {
+    throw new Error("Cannot swap servant as no account is selected");
+  }
+  if (idx < 0 || idx >= oldAccount.servants.length - 1) return;
+
+  // create new servants array with servants swapped
+  const servantA = oldAccount.servants[idx];
+  const servantB = oldAccount.servants[idx + 1];
+  const servants = [...oldAccount.servants];
+  servants[idx + 1] = servantA;
+  servants[idx] = servantB;
+
+  // create and save new account data
+  const account: AccountData = { ...oldAccount, servants };
+  saveAccount(account);
+  accountStore.set(account);
+}
+
+export function swapDownServant(idx: number) {
+  const oldAccount = accountStore.get();
+  if (!oldAccount) {
+    throw new Error("Cannot swap servant as no account is selected");
+  }
+  if (idx < 1 || idx >= oldAccount.servants.length) return;
+
+  // create new servants array with servants swapped
+  const servantA = oldAccount.servants[idx];
+  const servantB = oldAccount.servants[idx - 1];
+  const servants = [...oldAccount.servants];
+  servants[idx - 1] = servantA;
+  servants[idx] = servantB;
+
+  // create and save new account data
+  const account: AccountData = { ...oldAccount, servants };
+  saveAccount(account);
+  accountStore.set(account);
 }
 
 export function createAccount(name: string, region: "na" | "jp", fc: string) {
