@@ -125,20 +125,24 @@ export function apiServantToServantData(
   servantNA?: ServantWithLore,
   name?: string
 ): ServantData {
+  const skills = getSkillIcons(servant.skills);
   const servantData: ServantData = {
     id: servant.collectionNo,
     name: name || servantNA?.name || servant.name,
     rarity: servant.rarity,
     className: mapServantClass(servant.className),
     icons: mapServantIcons(servant.extraAssets),
-    skills: getSkillIcons(servant.skills),
-    mats: getServantMats(servant)
+    mats: getServantMats(servant),
+    skills
   };
 
   if (servantNA) {
     servantData.na = true;
-    // TODO: small data size improvement: skip adding this to data if deepEquals JP skills
-    servantData.skillsNA = getSkillIcons(servantNA.skills);
+    const skillsNA = getSkillIcons(servantNA.skills);
+    // only include NA skills if different
+    if (skills.toString() != skillsNA.toString()) {
+      servantData.skillsNA = getSkillIcons(servantNA.skills);
+    }
   }
 
   if (Object.values(servant.profile.costume).length > 0) {
