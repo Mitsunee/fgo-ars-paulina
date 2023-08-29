@@ -1,4 +1,5 @@
 import type { Dispatch } from "preact/hooks";
+import { useMemo } from "preact/hooks";
 import type { AccountServant } from "~/client/account";
 import {
   deleteServant,
@@ -19,12 +20,17 @@ import type { ServantData } from "~/data/servants";
 import { useModal } from "~/hooks/useModal";
 import { flattenServantNeeds } from "~/util/flattenServantNeeds";
 import { formatLongNumber } from "~/util/formatLongNumber";
-import { getSkillIconUrl } from "~/util/urls";
+import { getServantIconUrl, getSkillIconUrl } from "~/util/urls";
 import styles from "./ServantCard.module.css";
 
-interface StatItemProps {
+interface DetailsItemProps {
   title: string;
   icon: string;
+  text: string;
+  done?: boolean;
+}
+
+interface StatItemProps extends Pick<DetailsItemProps, "title" | "icon"> {
   current: number;
   target: number;
   replaceZero?: true;
@@ -51,15 +57,7 @@ interface ServantCardProps {
   set: Dispatch<number | undefined>;
 }
 
-function StatItem({
-  title,
-  icon,
-  current,
-  target,
-  replaceZero
-}: StatItemProps) {
-  const zero = replaceZero ? "-" : "0";
-
+function DetailsItem({ title, icon, text, done }: DetailsItemProps) {
   return (
     <li>
       <img
@@ -70,10 +68,27 @@ function StatItem({
         height={48}
         loading="lazy"
       />
-      <span className={cc([current == target && styles.done])}>
-        {`${current || zero} / ${target || zero}`}
-      </span>
+      <span className={cc([done && styles.done])}>{text}</span>
     </li>
+  );
+}
+
+function StatItem({
+  title,
+  icon,
+  current,
+  target,
+  replaceZero
+}: StatItemProps) {
+  const zero = replaceZero ? "-" : "0";
+
+  return (
+    <DetailsItem
+      title={title}
+      icon={icon}
+      text={`${current || zero} / ${target || zero}`}
+      done={current == target}
+    />
   );
 }
 
@@ -85,7 +100,7 @@ function MaterialNeeds({ servant, data }: MaterialNeedsProps) {
 
   return (
     <>
-      <h3>Needed Materials:</h3>
+      <h3>Needed Materials</h3>
       <ul>
         {mats.map(({ id, amount }) => {
           const mat = materialsData[id];
@@ -112,6 +127,12 @@ function MaterialNeeds({ servant, data }: MaterialNeedsProps) {
   );
 }
 
+function labelCostumeState(state: null | undefined | boolean) {
+  if (state === false) return "Planned";
+  if (state) return "Done";
+  return "Skipped";
+}
+
 export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
   const user = useAccount()!;
   const servantsData = useServantsData();
@@ -122,6 +143,15 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
     user.region == "na"
       ? servantData.skillsNA || servantData.skills
       : servantData.skills;
+  const costumesShown = useMemo(
+    () =>
+      servantData.costumes
+        ? (Object.keys(servantData.costumes) as IdKey[]).filter(
+            id => id != "800140" && id != "800150"
+          )
+        : [],
+    [servantData.costumes]
+  );
 
   return (
     <>
@@ -250,6 +280,22 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
               replaceZero
             />
           </ul>
+          {costumesShown.length > 0 && (
+            <>
+              <h3>Costumes</h3>
+              <ul className={styles.infoStats}>
+                {costumesShown.map(id => (
+                  <DetailsItem
+                    key={id}
+                    icon={getServantIconUrl(servantData.icons[id])}
+                    title={servantData.costumes![id]}
+                    text={labelCostumeState(servant.costume?.[id])}
+                    done={!!servant.costume?.[id]}
+                  />
+                ))}
+              </ul>
+            </>
+          )}
           <MaterialNeeds servant={servant} data={servantData} />
           <ButtonRow>
             <IconButton
