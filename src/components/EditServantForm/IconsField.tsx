@@ -1,4 +1,5 @@
 import type { Dispatch } from "preact/hooks";
+import { useMemo } from "preact/hooks";
 import type { CostumeState } from "~/hooks/useCostumes";
 import { getServantIconUrl } from "~/util/urls";
 import { ButtonField } from "../ButtonField";
@@ -38,6 +39,7 @@ export function IconsField({
   set
 }: IconsFieldProps) {
   const active = validateIconChoice(selected, ascension, costumes);
+  const isMash = useMemo(() => costumeIds.includes("800150"), [costumeIds]);
 
   return (
     <>
@@ -103,6 +105,26 @@ export function IconsField({
                 />
               );
             })}
+          </>
+        )}
+        {isMash && (
+          <>
+            <InputRadioIcon
+              name="selected-icon"
+              value={"800140"}
+              checked={active == "800140"}
+              src={getServantIconUrl(icons["800140"], true)}
+              title={costumesData["800140"]}
+              onClick={() => set("800140")}
+            />
+            <InputRadioIcon
+              name="selected-icon"
+              value={"800150"}
+              checked={active == "800150"}
+              src={getServantIconUrl(icons["800150"], true)}
+              title={costumesData["800150"]}
+              onClick={() => set("800150")}
+            />
           </>
         )}
       </fieldset>

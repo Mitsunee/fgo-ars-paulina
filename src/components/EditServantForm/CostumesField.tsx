@@ -85,16 +85,19 @@ export function CostumesField({
 }: CostumesFieldProps) {
   return (
     <div className={styles.fieldgroup}>
-      {ids.map(id => (
-        <CostumeField
-          key={id}
-          name={data[id]}
-          icon={icons[id]}
-          state={costumes[id]}
-          set={set}
-          unlockable={unlockable}
-        />
-      ))}
+      {ids
+        // filter out ortinax
+        .filter(id => id != "800150" && id != "800140")
+        .map(id => (
+          <CostumeField
+            key={id}
+            name={data[id]}
+            icon={icons[id]}
+            state={costumes[id]}
+            set={set}
+            unlockable={unlockable}
+          />
+        ))}
     </div>
   );
 }

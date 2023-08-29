@@ -1,6 +1,5 @@
 import { useState } from "preact/hooks";
 import { useAccount } from "~/client/account";
-//import { useServantsData } from "~/client/context";
 import { changeRoute } from "~/client/router";
 import { ButtonRow } from "~/components/ButtonField";
 import { ServantCard } from "./ServantCard";
@@ -10,7 +9,7 @@ export function ServantListView() {
   const user = useAccount();
   const [selected, setSelected] = useState<number | undefined>();
 
-  if (!user) return null;
+  if (!user) return null; // TODO: error handling
 
   return (
     <section className="section">
