@@ -9,6 +9,7 @@ import {
   useAccount
 } from "~/client/account";
 import { useMaterialList, useServantsData } from "~/client/context";
+import { changeRoute } from "~/client/router";
 import { BorderedIcon } from "~/components/BorderedIcon";
 import { ButtonRow } from "~/components/ButtonField";
 import { IconButton } from "~/components/IconButton";
@@ -141,6 +142,12 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
             }}
             icon={expanded ? "less" : "more"}
           />
+          <IconButton
+            icon="edit"
+            onClick={() =>
+              changeRoute({ path: "edit-servant", props: { idx } })
+            }
+          />
           {servant.id != 1 && (
             <IconButton onClick={() => showDialog()} icon="delete" />
           )}
@@ -246,9 +253,14 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
           <MaterialNeeds servant={servant} data={servantData} />
           <ButtonRow>
             <IconButton
+              icon="edit"
               className="primary"
-              icon="less"
-              onClick={() => set(undefined)}>
+              onClick={() =>
+                changeRoute({ path: "edit-servant", props: { idx } })
+              }>
+              Edit
+            </IconButton>
+            <IconButton icon="less" onClick={() => set(undefined)}>
               Close
             </IconButton>
           </ButtonRow>

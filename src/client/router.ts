@@ -3,12 +3,14 @@ import { atom } from "nanostores";
 import type { AnyComponent } from "preact";
 import { AddServantView } from "~/views/AddServant";
 import { CreateAccountView } from "~/views/CreateAccount";
+import { EditServantView } from "~/views/EditServantView";
 import { ServantListView } from "~/views/ServantsList";
 
 export const routes = {
   home: ServantListView,
   "create-account": CreateAccountView,
-  "add-servant": AddServantView
+  "add-servant": AddServantView,
+  "edit-servant": EditServantView
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } satisfies Record<string, AnyComponent<any>>;
 
