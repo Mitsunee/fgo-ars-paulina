@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
 import { useAccount } from "~/client/account";
 //import { useServantsData } from "~/client/context";
-import { changeRoute, Routes } from "~/client/router";
+import { changeRoute } from "~/client/router";
 import { ButtonRow } from "~/components/ButtonField";
 import { ServantCard } from "./ServantCard";
 import styles from "./ServantList.module.css";
@@ -29,7 +29,7 @@ export function ServantListView() {
       <ButtonRow>
         <button
           className="primary"
-          onClick={() => changeRoute(Routes.SERVANTS_ADD)}>
+          onClick={() => changeRoute({ path: "add-servant" })}>
           Add Servant
         </button>
         <button>Sample Text</button>

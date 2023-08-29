@@ -5,12 +5,10 @@ import {
   materialsContext,
   servantsContext
 } from "~/client/context";
-import { Routes, useRouter } from "~/client/router";
+import { routes, useRouter } from "~/client/router";
 import type { BuildInfo } from "~/data/buildInfo";
 import { useIsClient } from "~/hooks/useIsClient";
-import { AddServantView } from "~/views/AddServant";
 import { CreateAccountView } from "~/views/CreateAccount";
-import { ServantListView } from "~/views/ServantsList";
 import { Loading } from "./Loading";
 
 export interface AppProps {
@@ -20,25 +18,19 @@ export interface AppProps {
 function AppRouter() {
   const user = useAccount();
   const [route] = useRouter();
+  const RouteComponent = routes[route.path];
 
-  if (user === undefined) {
-    return <Loading title="Loading Account Data" />;
-  }
-
-  if (!user) {
-    return <CreateAccountView forced />;
-  }
-
-  switch (route) {
-    case Routes.SERVANTS_LIST:
-      return <ServantListView />;
-    case Routes.CREATE_ACCOUNT:
-      return <CreateAccountView />;
-    case Routes.SERVANTS_ADD:
-      return <AddServantView />;
-    default:
-      return <ServantListView />;
-  }
+  return (
+    <>
+      {user === undefined ? (
+        <Loading title="Loading Account Data" />
+      ) : user ? (
+        <RouteComponent {...route.props} />
+      ) : (
+        <CreateAccountView forced />
+      )}
+    </>
+  );
 }
 
 export function App(ctxProps: AppProps) {
