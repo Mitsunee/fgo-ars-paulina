@@ -25,7 +25,8 @@ function AppRouter() {
       {user === undefined ? (
         <Loading title="Loading Account Data" />
       ) : user ? (
-        <RouteComponent {...route.props} />
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        <RouteComponent {...(route.props as any)} />
       ) : (
         <CreateAccountView forced />
       )}
