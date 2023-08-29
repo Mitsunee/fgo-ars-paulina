@@ -1,6 +1,7 @@
 import type { ElementProps, WithCC } from "../jsx";
 import { cc } from "../jsx";
 import { IconDelete } from "./IconDelete";
+import { IconEdit } from "./IconEdit";
 import { IconLeft } from "./IconLeft";
 import { IconLess } from "./IconLess";
 import { IconMore } from "./IconMore";
@@ -9,6 +10,7 @@ import styles from "./IconButton.module.css";
 
 const icons = {
   delete: IconDelete,
+  edit: IconEdit,
   left: IconLeft,
   less: IconLess,
   more: IconMore,
