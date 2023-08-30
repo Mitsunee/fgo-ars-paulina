@@ -156,7 +156,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
   return (
     <>
       <li className={cc([styles.card, expanded && styles.sel])}>
-        <ButtonRow>
+        <div className={styles.buttons}>
           {idx > 0 && (
             <IconButton
               onClick={() => {
@@ -190,7 +190,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
               icon="right"
             />
           )}
-        </ButtonRow>
+        </div>
         <img src={activeIcon} alt="" width={142} height={155} />
         <h2>{servantData.name}</h2>
         <span>
