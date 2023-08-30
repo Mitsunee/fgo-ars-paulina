@@ -3,10 +3,13 @@ import { useState } from "preact/hooks";
 import type { AccountServant } from "~/client/account";
 import { ServantStat } from "~/client/account";
 import type { ElementProps } from "~/components/jsx";
+import { getGrailConstantByRarity } from "~/data/grailConstant";
+import type { ServantData } from "~/data/servants";
 
 export interface StatProps {
   current: ElementProps<"input">;
   target: ElementProps<"input">;
+  stat: [number, number];
 }
 
 type InputChangeEvent = NonNullable<ElementProps<"input">["onChange"]>;
@@ -36,7 +39,8 @@ export function useStat(min: number, max: number, initial: [number, number]) {
 
   const props: StatProps = {
     current: { type: "number", value: stat[0], min, max, onChange: setCurrent },
-    target: { type: "number", value: stat[1], min, max, onChange: setTarget }
+    target: { type: "number", value: stat[1], min, max, onChange: setTarget },
+    stat
   };
 
   return props;
@@ -77,4 +81,25 @@ export function useStats(oldServant: AccountServant) {
   ];
 
   return { ascension, skills, appends };
+}
+
+export function useGrails(
+  oldServant: AccountServant,
+  servantData: ServantData
+) {
+  const grailsData = getGrailConstantByRarity(servantData.rarity);
+  const max = servantData.id == 1 ? 0 : grailsData.stages.length;
+  const grails = useStat(0, max, [
+    oldServant.stats[ServantStat.GRAIL_CURRENT],
+    oldServant.stats[ServantStat.GRAIL_TARGET]
+  ]);
+
+  const currentCap =
+    grailsData.cap +
+    (grails.stat[0] > 0 ? grailsData.stages[grails.stat[0] - 1].add : 0);
+  const targetCap =
+    grailsData.cap +
+    (grails.stat[1] > 0 ? grailsData.stages[grails.stat[1] - 1].add : 0);
+
+  return { grails, cap: [currentCap, targetCap] as const };
 }

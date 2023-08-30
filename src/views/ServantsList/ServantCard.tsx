@@ -194,6 +194,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
         <img src={activeIcon} alt="" width={142} height={155} />
         <h2>{servantData.name}</h2>
         <span>
+          {/* TODO: add grails here? */}
           <img
             src="https://static.atlasacademy.io/NA/Items/40.png"
             alt=""
@@ -234,11 +235,18 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
         <li className={cc(["section", styles.info])}>
           <h2>{servantData.name}</h2>
           <ul className={styles.infoStats}>
+            {/* TODO: make showing appends and grails optional? */}
             <StatItem
               icon="https://static.atlasacademy.io/NA/Items/40.png"
               title="Ascension"
               current={servant.stats[ServantStat.ASCENSION_CURRENT]}
               target={servant.stats[ServantStat.ASCENSION_TARGET]}
+            />
+            <StatItem
+              icon="https://static.atlasacademy.io/NA/Items/7999.png"
+              title="Grails"
+              current={servant.stats[ServantStat.GRAIL_CURRENT]}
+              target={servant.stats[ServantStat.GRAIL_TARGET]}
             />
             <StatItem
               icon={getSkillIconUrl(skillIcons[0])}

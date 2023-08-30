@@ -19,7 +19,9 @@ export const enum ServantStat {
   APPEND2_CURRENT,
   APPEND2_TARGET,
   APPEND3_CURRENT,
-  APPEND3_TARGET
+  APPEND3_TARGET,
+  GRAIL_CURRENT,
+  GRAIL_TARGET
 }
 
 export const enum LocalStorageKeys {
@@ -33,7 +35,7 @@ export interface AccountServant {
   /**
    * Tuple containing current and target levels for ascension, skills and append skills. See `ServantStat` for indices
    */
-  stats: Tuple<number, 14>;
+  stats: Tuple<number, 16>;
   /**
    * Maps costume id to state where `null` means costume is not wanted, `true` means costume is aquired and `false` means costume is wanted but not unlocked
    */
@@ -105,7 +107,7 @@ export function saveAccount(data: AccountData) {
 export function createServant(data: ServantData): AccountServant {
   const servant: AccountServant = {
     id: data.id,
-    stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0]
+    stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0]
   };
 
   if (data.na) {
@@ -213,7 +215,7 @@ export function createAccount(name: string, region: "na" | "jp", fc: string) {
     servants: [
       {
         id: 1,
-        stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0],
+        stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0],
         owned: true
       }
     ]

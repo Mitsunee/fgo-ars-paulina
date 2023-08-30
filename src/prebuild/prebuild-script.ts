@@ -31,25 +31,35 @@ function filterServantList(list: ServantWithLore[]) {
 }
 
 (async function main() {
-  const [niceServant, niceServantNA, apiInfo] = await Promise.all([
-    api.JP.servantListNiceWithLore().then(filterServantList),
-    api.NA.servantListNiceWithLore().then(filterServantList),
-    getApiInfo()
-  ]);
+  const [niceServant, niceServantNA, servantNameOverrides, apiInfo] =
+    await Promise.all([
+      api.JP.servantListNiceWithLore().then(filterServantList),
+      api.NA.servantListNiceWithLore().then(filterServantList),
+      getServantNameOverridesFile(),
+      getApiInfo()
+    ]);
 
   // get materials
   const niceItem = getItemsFromNiceServant(niceServant);
   const niceItemNA = getItemsFromNiceServant(niceServantNA);
   const materials = arrayToDataMap(
-    niceItem.map(item => {
-      const itemNA = niceItemNA.find(itemNA => itemNA.id == item.id);
-      const material = apiItemToMaterial(itemNA || item);
-      return material;
-    })
+    niceItem
+      .map(item => {
+        const itemNA = niceItemNA.find(itemNA => itemNA.id == item.id);
+        const material = apiItemToMaterial(itemNA || item);
+        return material;
+      })
+      .concat({
+        id: 7999,
+        name: "Holy Grail",
+        icon: "https://static.atlasacademy.io/NA/Items/7999.png",
+        priority: 400,
+        rarity: "gold",
+        na: true
+      })
   );
 
   // get servant names
-  const servantNameOverrides = await getServantNameOverridesFile();
   const servantNamesMap = await generateServantNameList(
     niceServant,
     niceServantNA,

@@ -1,7 +1,7 @@
-import type { ElementProps } from "~/components/jsx";
+import type { ElementProps, WithChildren } from "~/components/jsx";
 import styles from "./EditServantForm.module.css";
 
-interface StatFieldProps {
+interface StatFieldProps extends WithChildren {
   current: ElementProps<"input">;
   target: ElementProps<"input">;
   icon: string;
@@ -11,6 +11,7 @@ interface StatFieldProps {
 }
 
 export function StatField({
+  children,
   current,
   target,
   icon,
@@ -30,6 +31,7 @@ export function StatField({
         title={`Current ${title} Stage`}
       />
       <input {...target} name={`${id}-target`} title={`${title} Target`} />
+      {children}
     </fieldset>
   );
 }

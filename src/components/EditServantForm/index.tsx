@@ -8,7 +8,7 @@ import type { ElementProps, WithCC } from "~/components/jsx";
 import { cc } from "~/components/jsx";
 import { appendIcons } from "~/data/appendIcons";
 import { useCostumes } from "~/hooks/useCostumes";
-import { useStats } from "~/hooks/useStat";
+import { useGrails, useStats } from "~/hooks/useStat";
 import { CostumesField } from "./CostumesField";
 import { IconsField } from "./IconsField";
 import { SkillsField } from "./SkillsField";
@@ -31,7 +31,8 @@ export function EditServantForm({
   const user = useAccount()!;
   const [owned, setOwned] = useState(oldServant.owned ?? oldServant.id === 1);
   const { ascension, skills, appends } = useStats(oldServant);
-  const currentAsc = +(ascension.current.value ?? 0);
+  const { grails, cap: levelCap } = useGrails(oldServant, servantData);
+  const currentAsc = owned ? ascension.stat[0] : 0;
   const [costumeIds, costumes, setCostume] = useCostumes(
     costumesData,
     oldServant.costume
@@ -51,11 +52,6 @@ export function EditServantForm({
       onSubmit={ev => ev.preventDefault()}
       {...props}
       className={cc([className])}>
-      {/* <h2>Debug</h2>
-      <fieldset className="wide">
-        <legend>Old Servant</legend>
-        <span>{JSON.stringify(oldServant)}</span>
-      </fieldset> */}
       <fieldset>
         <legend>Owned</legend>
         {possibleToOwn && (
@@ -85,6 +81,14 @@ export function EditServantForm({
         id="ascension"
         owned={owned}
       />
+      <StatField
+        {...grails}
+        icon="https://static.atlasacademy.io/NA/Items/7999.png"
+        title="Grails"
+        id="grails"
+        owned={currentAsc == 4}>
+        <span>to {currentAsc == 4 ? levelCap.join("/") : levelCap[1]}</span>
+      </StatField>
       {/* TODO: implement priority system here */}
       <h2>Skills</h2>
       <div className={styles.fieldgroup}>

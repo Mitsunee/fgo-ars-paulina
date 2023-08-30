@@ -42,6 +42,16 @@ export function flattenMaterialUsage(
   for (let idx = 0; idx < servants.length; idx++) {
     const servant = servants[idx];
     const servantData = servantsData[servant.id];
+
+    // Special case for holy grail
+    if (mat.id == 7999) {
+      const amount =
+        servant.stats[ServantStat.GRAIL_TARGET] -
+        servant.stats[ServantStat.GRAIL_CURRENT];
+      if (amount > 0) usage.push({ servant, idx, amount });
+      continue;
+    }
+
     let amount =
       // count skill stages
       countStages(
@@ -95,7 +105,7 @@ export function flattenMaterialUsage(
       }
     }
 
-    if (amount > 1) {
+    if (amount >= 1) {
       usage.push({ servant, idx, amount });
     }
   }

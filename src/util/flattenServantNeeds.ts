@@ -1,5 +1,6 @@
 import type { AccountServant } from "~/client/account";
 import { ServantStat } from "~/client/account";
+import { getGrailConstantByRarity } from "~/data/grailConstant";
 import type { MaterialData } from "~/data/materials";
 import type { EnhancementStage, ServantData } from "~/data/servants";
 
@@ -23,17 +24,22 @@ export function flattenServantsNeeds(
   const map = new Map<number, MaterialAmount>();
   const res = { qp: 0, mats: new Array<MaterialAmount>() };
 
+  function addAmount(id: number, amount: number) {
+    if (amount < 1) return;
+    const mat = map.get(id);
+    if (!mat) {
+      const newMat: MaterialAmount = { id, amount };
+      map.set(id, newMat);
+      res.mats.push(newMat);
+      return;
+    }
+    mat.amount += amount;
+  }
+
   function addStage(stage: EnhancementStage) {
     res.qp += stage.qp;
     for (const [id, amount] of stage.items) {
-      const mat = map.get(id);
-      if (!mat) {
-        const newMat: MaterialAmount = { id, amount };
-        map.set(id, newMat);
-        res.mats.push(newMat);
-        continue;
-      }
-      mat.amount += amount;
+      addAmount(id, amount);
     }
   }
 
@@ -92,6 +98,17 @@ export function flattenServantsNeeds(
         servant.stats[ServantStat.ASCENSION_CURRENT],
         servant.stats[ServantStat.ASCENSION_TARGET]
       );
+    }
+
+    // add grails
+    if (servant.stats[ServantStat.GRAIL_TARGET] > 0) {
+      const grailsData = getGrailConstantByRarity(servantData.rarity);
+      const sliced = grailsData.stages.slice(
+        servant.stats[ServantStat.GRAIL_CURRENT],
+        servant.stats[ServantStat.GRAIL_TARGET]
+      );
+      res.qp += sliced.reduce((qp, stage) => qp + stage.qp, 0);
+      addAmount(7999, sliced.length);
     }
 
     // add costumes

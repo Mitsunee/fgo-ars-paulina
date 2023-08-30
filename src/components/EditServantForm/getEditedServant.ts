@@ -15,7 +15,7 @@ export function getEditedServant(
 ) {
   const servant: AccountServant = {
     id: servantData.id,
-    stats: [0, 4, 1, 10, 1, 10, 1, 10, 1, 1, 1, 1, 1, 1]
+    stats: [0, 4, 1, 10, 1, 10, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0]
   };
   let temp: null | RadioNodeList | HTMLInputElement;
 
@@ -60,6 +60,7 @@ export function getEditedServant(
     getStatsFields("append-1"),
     getStatsFields("append-2")
   ];
+  const grails = getStatsFields("grails");
 
   // get selected icon
   temp = elements.namedItem("selected-icon") as RadioNodeList;
@@ -87,10 +88,12 @@ export function getEditedServant(
 
   // apply stats
   if (owned) servant.owned = true;
-  servant.stats = [...ascension, ...skills.flat(), ...appends.flat()] as Tuple<
-    number,
-    14
-  >;
+  servant.stats = [
+    ...ascension,
+    ...skills.flat(),
+    ...appends.flat(),
+    ...grails
+  ] as Tuple<number, 16>;
   if (icon !== "auto") servant.icon = icon;
   if (hasCostumes) servant.costume = costumes;
 
