@@ -8,12 +8,34 @@ interface MaterialAmount {
   amount: number;
 }
 
-export function flattenServantNeeds(
-  servant: AccountServant,
-  servantData: ServantData,
+/**
+ * Flattens materials needed by user's servants and counts QP needed
+ * @param servants User's Servants
+ * @param servantsData data of servants
+ * @param materialsData data of materials
+ * @returns Object counting amount of QP needed and Array of Object's containing materials' IDs and the amount needed
+ */
+export function flattenServantsNeeds(
+  servants: AccountServant[],
+  servantsData: DataMap<ServantData>,
   materialsData: DataMap<MaterialData>
 ) {
-  const stages = new Array<EnhancementStage>();
+  const map = new Map<number, MaterialAmount>();
+  const res = { qp: 0, mats: new Array<MaterialAmount>() };
+
+  function addStage(stage: EnhancementStage) {
+    res.qp += stage.qp;
+    for (const [id, amount] of stage.items) {
+      const mat = map.get(id);
+      if (!mat) {
+        const newMat: MaterialAmount = { id, amount };
+        map.set(id, newMat);
+        res.mats.push(newMat);
+        continue;
+      }
+      mat.amount += amount;
+    }
+  }
 
   function addStages(
     from: EnhancementStage[],
@@ -21,83 +43,67 @@ export function flattenServantNeeds(
     target: number
   ) {
     for (let i = current; i < target; i++) {
-      stages.push(from[i]);
+      const stage = from[i];
+      addStage(stage);
     }
   }
 
-  // add skill stages
-  addStages(
-    servantData.mats.skill,
-    servant.stats[ServantStat.SKILL1_CURRENT] - 1,
-    servant.stats[ServantStat.SKILL1_TARGET] - 1
-  );
-  addStages(
-    servantData.mats.skill,
-    servant.stats[ServantStat.SKILL2_CURRENT] - 1,
-    servant.stats[ServantStat.SKILL2_TARGET] - 1
-  );
-  addStages(
-    servantData.mats.skill,
-    servant.stats[ServantStat.SKILL3_CURRENT] - 1,
-    servant.stats[ServantStat.SKILL3_TARGET] - 1
-  );
+  for (const servant of servants) {
+    const servantData = servantsData[servant.id];
 
-  // add append stages
-  addStages(
-    servantData.mats.append,
-    Math.max(servant.stats[ServantStat.APPEND1_CURRENT] - 1, 0),
-    Math.max(servant.stats[ServantStat.APPEND1_TARGET] - 1, 0)
-  );
-  addStages(
-    servantData.mats.append,
-    Math.max(servant.stats[ServantStat.APPEND2_CURRENT] - 1, 0),
-    Math.max(servant.stats[ServantStat.APPEND2_TARGET] - 1, 0)
-  );
-  addStages(
-    servantData.mats.append,
-    Math.max(servant.stats[ServantStat.APPEND3_CURRENT] - 1, 0),
-    Math.max(servant.stats[ServantStat.APPEND3_TARGET] - 1, 0)
-  );
-
-  // add ascension stages
-  if (servantData.mats.ascension) {
+    // add skill stages
     addStages(
-      servantData.mats.ascension,
-      servant.stats[ServantStat.ASCENSION_CURRENT],
-      servant.stats[ServantStat.ASCENSION_TARGET]
+      servantData.mats.skill,
+      servant.stats[ServantStat.SKILL1_CURRENT] - 1,
+      servant.stats[ServantStat.SKILL1_TARGET] - 1
     );
-  }
+    addStages(
+      servantData.mats.skill,
+      servant.stats[ServantStat.SKILL2_CURRENT] - 1,
+      servant.stats[ServantStat.SKILL2_TARGET] - 1
+    );
+    addStages(
+      servantData.mats.skill,
+      servant.stats[ServantStat.SKILL3_CURRENT] - 1,
+      servant.stats[ServantStat.SKILL3_TARGET] - 1
+    );
 
-  // add costumes
-  if (servantData.mats.costume && servant.costume) {
-    const keys = Object.keys(servant.costume) as `${number}`[];
-    for (const key of keys) {
-      if (servant.costume[key] === false) {
-        stages.push(servantData.mats.costume[key]);
+    // add append stages
+    addStages(
+      servantData.mats.append,
+      Math.max(servant.stats[ServantStat.APPEND1_CURRENT] - 1, 0),
+      Math.max(servant.stats[ServantStat.APPEND1_TARGET] - 1, 0)
+    );
+    addStages(
+      servantData.mats.append,
+      Math.max(servant.stats[ServantStat.APPEND2_CURRENT] - 1, 0),
+      Math.max(servant.stats[ServantStat.APPEND2_TARGET] - 1, 0)
+    );
+    addStages(
+      servantData.mats.append,
+      Math.max(servant.stats[ServantStat.APPEND3_CURRENT] - 1, 0),
+      Math.max(servant.stats[ServantStat.APPEND3_TARGET] - 1, 0)
+    );
+
+    // add ascension stages
+    if (servantData.mats.ascension) {
+      addStages(
+        servantData.mats.ascension,
+        servant.stats[ServantStat.ASCENSION_CURRENT],
+        servant.stats[ServantStat.ASCENSION_TARGET]
+      );
+    }
+
+    // add costumes
+    if (servantData.mats.costume && servant.costume) {
+      const keys = Object.keys(servant.costume) as IdKey[];
+      for (const key of keys) {
+        if (servant.costume[key] === false) {
+          addStage(servantData.mats.costume[key]);
+        }
       }
     }
   }
-
-  // reduce stages
-  const map = new Map<number, { id: number; amount: number }>();
-  const res = stages.reduce(
-    (total, stage) => {
-      for (const [id, amount] of stage.items) {
-        const mat = map.get(id);
-        if (!mat) {
-          const newMat: MaterialAmount = { id, amount };
-          map.set(id, newMat);
-          total.mats.push(newMat);
-          continue;
-        }
-        mat.amount += amount;
-        // no map set needed I think?
-      }
-      total.qp += stage.qp;
-      return total;
-    },
-    { qp: 0, mats: new Array<MaterialAmount>() }
-  );
 
   // sort
   res.mats.sort((a, b) => {
@@ -108,4 +114,23 @@ export function flattenServantNeeds(
   });
 
   return res;
+}
+
+/**
+ * Flattens materials needed by user's servant and counts QP needed
+ * @param servant User Servant
+ * @param servantData data of servant
+ * @param materialsData data of materials
+ * @returns Object counting amount of QP needed and Array of Object's containing materials' IDs and the amount needed
+ */
+export function flattenServantNeeds(
+  servant: AccountServant,
+  servantData: ServantData,
+  materialsData: DataMap<MaterialData>
+) {
+  return flattenServantsNeeds(
+    [servant],
+    { [servant.id]: servantData },
+    materialsData
+  );
 }

@@ -239,6 +239,13 @@ input[type="radio"].button {
       border-bottom-color: var(--accent);
     }
   }
+
+  &.no-hover {
+    & button,
+    & label {
+      border-color: transparent !important;
+    }
+  }
 }
 
 .svg {
