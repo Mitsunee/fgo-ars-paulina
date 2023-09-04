@@ -24,6 +24,7 @@ export function flattenMaterialUsage(
   const usage = new Array<MaterialUsage>();
 
   function countStage(stage: EnhancementStage) {
+    if (!stage) throw new Error("yo this is bad right here");
     return stage.items.find(([id]) => id == mat.id)?.[1] ?? 0;
   }
 
@@ -33,7 +34,7 @@ export function flattenMaterialUsage(
     target: number
   ) {
     let total = 0;
-    for (let i = current; i < target; i++) {
+    for (let i = Math.max(0, current); i < target; i++) {
       total += countStage(from[i]);
     }
     return total;
