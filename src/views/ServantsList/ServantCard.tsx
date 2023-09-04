@@ -205,12 +205,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
           {servant.stats[ServantStat.ASCENSION_TARGET]}
         </span>
         <span>
-          <img
-            // PLACEHOLDER
-            src="https://static.atlasacademy.io/NA/Items/40.png"
-            alt=""
-            title="Skills"
-          />
+          <img src="/assets/icon_skills.png" alt="" title="Skills" />
           {servant.stats[ServantStat.SKILL1_CURRENT]}
           {" / "}
           {servant.stats[ServantStat.SKILL2_CURRENT]}
@@ -218,12 +213,7 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
           {servant.stats[ServantStat.SKILL3_CURRENT]}
         </span>
         <span>
-          <img
-            // PLACEHOLDER
-            src="https://static.atlasacademy.io/NA/Items/40.png"
-            alt=""
-            title="Append Skills"
-          />
+          <img src="/assets/icon_appends.png" alt="" title="Append Skills" />
           {servant.stats[ServantStat.APPEND1_CURRENT] || "-"}
           {" / "}
           {servant.stats[ServantStat.APPEND2_CURRENT] || "-"}
