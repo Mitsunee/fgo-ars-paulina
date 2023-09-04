@@ -139,10 +139,6 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
   const servantData = servantsData[servant.id];
   const activeIcon = getAccountServantIcon(servant, servantData.icons, true);
   const [dialog, createDialog, showDialog] = useModal();
-  const skillIcons =
-    user.region == "na"
-      ? servantData.skillsNA || servantData.skills
-      : servantData.skills;
   const costumesShown = useMemo(
     () =>
       servantData.costumes
@@ -152,6 +148,16 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
         : [],
     [servantData.costumes]
   );
+  const skillIcons =
+    user.region == "na"
+      ? servantData.skillsNA || servantData.skills
+      : servantData.skills;
+  const hasAppends =
+    servant.stats[ServantStat.APPEND1_TARGET] +
+      servant.stats[ServantStat.APPEND2_TARGET] +
+      servant.stats[ServantStat.APPEND3_TARGET] >
+    0;
+  const hasGrails = servant.stats[ServantStat.GRAIL_TARGET] > 0;
 
   return (
     <>
@@ -194,15 +200,23 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
         <img src={activeIcon} alt="" width={142} height={155} />
         <h2>{servantData.name}</h2>
         <span>
-          {/* TODO: add grails here? */}
           <img
             src="https://static.atlasacademy.io/NA/Items/40.png"
             alt=""
             title="Ascension"
           />
           {servant.stats[ServantStat.ASCENSION_CURRENT]}
-          {" / "}
-          {servant.stats[ServantStat.ASCENSION_TARGET]}
+          {hasGrails && (
+            <>
+              {" | "}
+              <img
+                src="https://static.atlasacademy.io/NA/Items/7999.png"
+                alt=""
+                title="Grailing"
+              />
+              {servant.stats[ServantStat.GRAIL_CURRENT]}
+            </>
+          )}
         </span>
         <span>
           <img src="/assets/icon_skills.png" alt="" title="Skills" />
@@ -225,19 +239,20 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
         <li className={cc(["section", styles.info])}>
           <h2>{servantData.name}</h2>
           <ul className={styles.infoStats}>
-            {/* TODO: make showing appends and grails optional? */}
             <StatItem
               icon="https://static.atlasacademy.io/NA/Items/40.png"
               title="Ascension"
               current={servant.stats[ServantStat.ASCENSION_CURRENT]}
               target={servant.stats[ServantStat.ASCENSION_TARGET]}
             />
-            <StatItem
-              icon="https://static.atlasacademy.io/NA/Items/7999.png"
-              title="Grails"
-              current={servant.stats[ServantStat.GRAIL_CURRENT]}
-              target={servant.stats[ServantStat.GRAIL_TARGET]}
-            />
+            {hasGrails && (
+              <StatItem
+                icon="https://static.atlasacademy.io/NA/Items/7999.png"
+                title="Grails"
+                current={servant.stats[ServantStat.GRAIL_CURRENT]}
+                target={servant.stats[ServantStat.GRAIL_TARGET]}
+              />
+            )}
             <StatItem
               icon={getSkillIconUrl(skillIcons[0])}
               title="Skill 1"
@@ -256,27 +271,31 @@ export function ServantCard({ servant, idx, expanded, set }: ServantCardProps) {
               current={servant.stats[ServantStat.SKILL3_CURRENT]}
               target={servant.stats[ServantStat.SKILL3_TARGET]}
             />
-            <StatItem
-              icon={getSkillIconUrl(appendIcons[0])}
-              title="Append Skill 1"
-              current={servant.stats[ServantStat.APPEND1_CURRENT]}
-              target={servant.stats[ServantStat.APPEND1_TARGET]}
-              replaceZero
-            />
-            <StatItem
-              icon={getSkillIconUrl(appendIcons[1])}
-              title="Append Skill 2"
-              current={servant.stats[ServantStat.APPEND2_CURRENT]}
-              target={servant.stats[ServantStat.APPEND2_TARGET]}
-              replaceZero
-            />
-            <StatItem
-              icon={getSkillIconUrl(appendIcons[2])}
-              title="Append Skill 3"
-              current={servant.stats[ServantStat.APPEND3_CURRENT]}
-              target={servant.stats[ServantStat.APPEND3_TARGET]}
-              replaceZero
-            />
+            {hasAppends && (
+              <>
+                <StatItem
+                  icon={getSkillIconUrl(appendIcons[0])}
+                  title="Append Skill 1"
+                  current={servant.stats[ServantStat.APPEND1_CURRENT]}
+                  target={servant.stats[ServantStat.APPEND1_TARGET]}
+                  replaceZero
+                />
+                <StatItem
+                  icon={getSkillIconUrl(appendIcons[1])}
+                  title="Append Skill 2"
+                  current={servant.stats[ServantStat.APPEND2_CURRENT]}
+                  target={servant.stats[ServantStat.APPEND2_TARGET]}
+                  replaceZero
+                />
+                <StatItem
+                  icon={getSkillIconUrl(appendIcons[2])}
+                  title="Append Skill 3"
+                  current={servant.stats[ServantStat.APPEND3_CURRENT]}
+                  target={servant.stats[ServantStat.APPEND3_TARGET]}
+                  replaceZero
+                />
+              </>
+            )}
           </ul>
           {costumesShown.length > 0 && (
             <>
