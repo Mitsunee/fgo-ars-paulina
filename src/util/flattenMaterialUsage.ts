@@ -4,93 +4,107 @@ import type { MaterialData } from "~/data/materials";
 import type { EnhancementStage, ServantData } from "~/data/servants";
 
 interface MaterialUsage {
-  servant: AccountServant;
-  idx: number;
-  amount: number;
+  total: number;
+  byServant: Record<IdKey, number>;
+  material: MaterialData;
 }
 
-/**
- * Counts Material usage across array of servants
- * @param mat data of materials
- * @param servants array of user's servants to check
- * @param servantsData data of servants
- * @returns Array of Objects containing servants' IDs and the amount they each use
- */
-export function flattenMaterialUsage(
-  mat: MaterialData,
-  servants: AccountServant[],
-  servantsData: DataMap<ServantData>
-) {
-  const usage = new Array<MaterialUsage>();
+const cache = new WeakMap<AccountServant[], MaterialUsage[]>();
 
-  function countStage(stage: EnhancementStage) {
-    if (!stage) throw new Error("yo this is bad right here");
-    return stage.items.find(([id]) => id == mat.id)?.[1] ?? 0;
+export function flattenMaterialUsage(
+  servants: AccountServant[],
+  servantsData: DataMap<ServantData>,
+  materialsData: DataMap<MaterialData>
+) {
+  const cached = cache.get(servants);
+  if (cached) return cached;
+  const map = new Map<number, MaterialUsage>();
+  const res = new Array<MaterialUsage>();
+
+  function addAmount(itemId: number, amount: number, servantIdx: number) {
+    const usage = map.get(itemId);
+    if (usage) {
+      usage.total += amount;
+      usage.byServant[servantIdx] = (usage.byServant[servantIdx] || 0) + amount;
+      return;
+    }
+
+    const newUsage: MaterialUsage = {
+      total: amount,
+      byServant: { [servantIdx]: amount },
+      material: materialsData[itemId]
+    };
+
+    map.set(itemId, newUsage);
+    res.push(newUsage);
   }
 
-  function countStages(
+  function addStage(stage: EnhancementStage, servantIdx: number) {
+    if (!stage) return;
+    stage.items.forEach(([item, amount]) =>
+      addAmount(item, amount, servantIdx)
+    );
+  }
+
+  function addStages(
     from: EnhancementStage[],
+    servantIdx: number,
     current: number,
     target: number
   ) {
-    let total = 0;
-    for (let i = Math.max(0, current); i < target; i++) {
-      total += countStage(from[i]);
+    for (let i = Math.max(0, current); i < Math.min(target, from.length); i++) {
+      addStage(from[i], servantIdx);
     }
-    return total;
   }
 
   for (let idx = 0; idx < servants.length; idx++) {
     const servant = servants[idx];
     const servantData = servantsData[servant.id];
 
-    // Special case for holy grail
-    if (mat.id == 7999) {
-      const amount =
-        servant.stats[ServantStat.GRAIL_TARGET] -
-        servant.stats[ServantStat.GRAIL_CURRENT];
-      if (amount > 0) usage.push({ servant, idx, amount });
-      continue;
-    }
+    // count skill stages
+    addStages(
+      servantData.mats.skill,
+      idx,
+      servant.stats[ServantStat.SKILL1_CURRENT] - 1,
+      servant.stats[ServantStat.SKILL1_TARGET] - 1
+    );
+    addStages(
+      servantData.mats.skill,
+      idx,
+      servant.stats[ServantStat.SKILL2_CURRENT] - 1,
+      servant.stats[ServantStat.SKILL2_TARGET] - 1
+    );
+    addStages(
+      servantData.mats.skill,
+      idx,
+      servant.stats[ServantStat.SKILL3_CURRENT] - 1,
+      servant.stats[ServantStat.SKILL3_TARGET] - 1
+    );
 
-    let amount =
-      // count skill stages
-      countStages(
-        servantData.mats.skill,
-        servant.stats[ServantStat.SKILL1_CURRENT] - 1,
-        servant.stats[ServantStat.SKILL1_TARGET] - 1
-      ) +
-      countStages(
-        servantData.mats.skill,
-        servant.stats[ServantStat.SKILL2_CURRENT] - 1,
-        servant.stats[ServantStat.SKILL2_TARGET] - 1
-      ) +
-      countStages(
-        servantData.mats.skill,
-        servant.stats[ServantStat.SKILL3_CURRENT] - 1,
-        servant.stats[ServantStat.SKILL3_TARGET] - 1
-      ) +
-      // count append stages
-      countStages(
-        servantData.mats.append,
-        servant.stats[ServantStat.APPEND1_CURRENT] - 1,
-        servant.stats[ServantStat.APPEND1_TARGET] - 1
-      ) +
-      countStages(
-        servantData.mats.append,
-        servant.stats[ServantStat.APPEND2_CURRENT] - 1,
-        servant.stats[ServantStat.APPEND2_TARGET] - 1
-      ) +
-      countStages(
-        servantData.mats.append,
-        servant.stats[ServantStat.APPEND3_CURRENT] - 1,
-        servant.stats[ServantStat.APPEND3_TARGET] - 1
-      );
+    // count append stages
+    addStages(
+      servantData.mats.append,
+      idx,
+      servant.stats[ServantStat.APPEND1_CURRENT] - 1,
+      servant.stats[ServantStat.APPEND1_TARGET] - 1
+    );
+    addStages(
+      servantData.mats.append,
+      idx,
+      servant.stats[ServantStat.APPEND2_CURRENT] - 1,
+      servant.stats[ServantStat.APPEND2_TARGET] - 1
+    );
+    addStages(
+      servantData.mats.append,
+      idx,
+      servant.stats[ServantStat.APPEND3_CURRENT] - 1,
+      servant.stats[ServantStat.APPEND3_TARGET] - 1
+    );
 
-    // count ascension stages
     if (servantData.mats.ascension) {
-      amount += countStages(
+      addStages(
         servantData.mats.ascension,
+        idx,
         servant.stats[ServantStat.ASCENSION_CURRENT],
         servant.stats[ServantStat.ASCENSION_TARGET]
       );
@@ -101,18 +115,22 @@ export function flattenMaterialUsage(
       const keys = Object.keys(servant.costume) as IdKey[];
       for (const key of keys) {
         if (servant.costume[key] === false) {
-          amount += countStage(servantData.mats.costume[key]);
+          addStage(servantData.mats.costume[key], idx);
         }
       }
     }
 
-    if (amount >= 1) {
-      usage.push({ servant, idx, amount });
+    // count grails
+    if (servant.stats[ServantStat.GRAIL_TARGET] > 0) {
+      const amount =
+        servant.stats[ServantStat.GRAIL_TARGET] -
+        servant.stats[ServantStat.GRAIL_CURRENT];
+      addAmount(7999, amount, idx);
     }
   }
 
-  // sort by servant
-  usage.sort((a, b) => a.servant.id - b.servant.id);
+  res.sort((a, b) => a.material.priority - b.material.priority);
 
-  return usage;
+  cache.set(servants, res);
+  return res;
 }

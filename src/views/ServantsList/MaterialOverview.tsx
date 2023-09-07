@@ -22,12 +22,37 @@ function MaterialSummary({ id, setServant }: MaterialSummaryProps) {
   const user = useAccount()!;
   const servantsData = useServantsData();
   const materialsData = useMaterialList();
-  const mat = materialsData[id];
 
-  const usage = useMemo(
-    () => flattenMaterialUsage(mat, user.servants, servantsData),
-    [mat, servantsData, user.servants]
-  );
+  const { usage, servants } = useMemo(() => {
+    const usage = flattenMaterialUsage(
+      user.servants,
+      servantsData,
+      materialsData
+    ).find(usage => usage.material.id == id);
+
+    const servants =
+      usage &&
+      Object.entries(usage.byServant).map(([idx, amount]) => ({
+        amount,
+        servant: user.servants[+idx],
+        idx: +idx
+      }));
+
+    return { usage, servants };
+  }, [id, materialsData, servantsData, user.servants]);
+
+  if (!usage || !servants) {
+    return (
+      <section className="section">
+        <p>Error: Material is not used</p>
+        <ButtonRow>
+          <button type="button" onClick={() => dialog.close()}>
+            Close
+          </button>
+        </ButtonRow>
+      </section>
+    );
+  }
 
   function handleClick(idx: number) {
     dialog.close();
@@ -38,9 +63,9 @@ function MaterialSummary({ id, setServant }: MaterialSummaryProps) {
 
   return (
     <section className="section">
-      <h2>Servants using {mat.name}</h2>
+      <h2>Servants using {usage.material.name}</h2>
       <div className="icon-list no-hover">
-        {usage.map(({ servant, idx, amount }) => {
+        {servants.map(({ servant, amount, idx }) => {
           const servantData = servantsData[servant.id];
           const icon = getAccountServantIcon(servant, servantData.icons);
 

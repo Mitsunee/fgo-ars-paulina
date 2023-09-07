@@ -9,6 +9,13 @@ interface MaterialAmount {
   amount: number;
 }
 
+interface ServantNeeds {
+  qp: number;
+  mats: MaterialAmount[];
+}
+
+const servantsNeedsCache = new WeakMap<AccountServant[], ServantNeeds>();
+
 /**
  * Flattens materials needed by user's servants and counts QP needed
  * @param servants User's Servants
@@ -20,9 +27,12 @@ export function flattenServantsNeeds(
   servants: AccountServant[],
   servantsData: DataMap<ServantData>,
   materialsData: DataMap<MaterialData>
-) {
+): ServantNeeds {
+  const cached = servantsNeedsCache.get(servants);
+  if (cached) return cached;
   const map = new Map<number, MaterialAmount>();
   const res = { qp: 0, mats: new Array<MaterialAmount>() };
+  servantsNeedsCache.set(servants, res);
 
   function addAmount(id: number, amount: number) {
     if (amount < 1) return;
@@ -133,6 +143,8 @@ export function flattenServantsNeeds(
   return res;
 }
 
+const servantNeedsCache = new WeakMap<AccountServant, ServantNeeds>();
+
 /**
  * Flattens materials needed by user's servant and counts QP needed
  * @param servant User Servant
@@ -144,10 +156,15 @@ export function flattenServantNeeds(
   servant: AccountServant,
   servantData: ServantData,
   materialsData: DataMap<MaterialData>
-) {
-  return flattenServantsNeeds(
+): ServantNeeds {
+  const cached = servantNeedsCache.get(servant);
+  if (cached) return cached;
+
+  const res = flattenServantsNeeds(
     [servant],
     { [servant.id]: servantData },
     materialsData
   );
+  servantNeedsCache.set(servant, res);
+  return res;
 }
