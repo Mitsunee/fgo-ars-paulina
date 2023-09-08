@@ -33,7 +33,9 @@ export function ServantListView() {
             onClick={() => changeRoute({ path: "add-servant" })}>
             Add Servant
           </button>
-          <button>Sample Text</button>
+          <button onClick={() => changeRoute({ path: "inventory" })}>
+            Inventory
+          </button>
         </ButtonRow>
       </section>
       <MaterialOverview setServant={setSelected} />

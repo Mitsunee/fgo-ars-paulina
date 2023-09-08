@@ -136,6 +136,8 @@ dialog,
 input[type="text"],
 input[type="search"],
 input[type="number"] {
+  display: inline-block;
+  padding: 2px 1px;
   border: 0px;
   border-bottom: 1px solid var(--text);
   background-color: transparent;

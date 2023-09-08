@@ -4,13 +4,15 @@ import type { AnyComponent } from "preact";
 import { AddServantView } from "~/views/AddServant";
 import { CreateAccountView } from "~/views/CreateAccount";
 import { EditServantView } from "~/views/EditServantView";
+import { InventoryView } from "~/views/InventoryView";
 import { ServantListView } from "~/views/ServantsList";
 
 export const routes = {
   home: ServantListView,
   "create-account": CreateAccountView,
   "add-servant": AddServantView,
-  "edit-servant": EditServantView
+  "edit-servant": EditServantView,
+  inventory: InventoryView
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } satisfies Record<string, AnyComponent<any>>;
 
