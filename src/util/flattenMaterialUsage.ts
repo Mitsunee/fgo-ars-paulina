@@ -22,6 +22,7 @@ export function flattenMaterialUsage(
   const res = new Array<MaterialUsage>();
 
   function addAmount(itemId: number, amount: number, servantIdx: number) {
+    if (amount < 1) return;
     const usage = map.get(itemId);
     if (usage) {
       usage.total += amount;
