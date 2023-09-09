@@ -185,6 +185,19 @@ export function deleteServant(idx: number) {
   accountStore.set(account);
 }
 
+export function setMaterialAmount(id: number, amount: number) {
+  const newAmount = Math.max(0, Math.trunc(amount));
+  const oldAccount = accountStore.get();
+  if (!oldAccount) {
+    throw new Error("Cannot delete servant as no account is selected");
+  }
+
+  const materials = { ...oldAccount.materials, [id]: newAmount };
+  const account: AccountData = { ...oldAccount, materials };
+  saveAccount(account);
+  accountStore.set(account);
+}
+
 export function createAccount(name: string, region: "na" | "jp", fc: string) {
   const account: AccountData = {
     name,
