@@ -11,21 +11,24 @@ import { ArrowButton } from "~/components/ArrowButton";
 import { BorderedIcon } from "~/components/BorderedIcon";
 import { ButtonField, ButtonRow } from "~/components/ButtonField";
 import { InputRadio } from "~/components/InputRadio";
+import { NoAccountError } from "~/components/NoAccountError";
 import { flattenMaterialUsage } from "~/util/flattenMaterialUsage";
 import { useFilters } from "./filters";
 import styles from "./InventoryView.module.css";
 
 export function InventoryView() {
-  const user = useAccount()!; // TODO: error handling
+  const user = useAccount();
   const materialsData = useMaterialList();
   const servantsData = useServantsData();
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useFilters();
 
-  const usages = flattenMaterialUsage(
-    user.servants,
-    servantsData,
-    materialsData
+  const usages = useMemo(
+    () =>
+      user
+        ? flattenMaterialUsage(user.servants, servantsData, materialsData)
+        : [],
+    [materialsData, servantsData, user]
   );
 
   const [materials, searcher] = useMemo(() => {
@@ -43,6 +46,8 @@ export function InventoryView() {
 
     return [materials, searcher] as const;
   }, [materialsData, usages]);
+
+  if (!user) return <NoAccountError />;
 
   const results = query ? searcher.search(query) : materials;
 

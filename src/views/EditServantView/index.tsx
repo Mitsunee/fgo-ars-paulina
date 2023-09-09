@@ -3,6 +3,7 @@ import { useServantsData } from "~/client/context";
 import { returnHome } from "~/client/router";
 import { EditServantForm } from "~/components/EditServantForm";
 import { getEditedServant } from "~/components/EditServantForm/getEditedServant";
+import { NoAccountError } from "~/components/NoAccountError";
 
 interface ViewProps {
   idx: number;
@@ -12,7 +13,7 @@ export function EditServantView({ idx }: ViewProps) {
   const user = useAccount(); // can use ! here, just not doing it yet so TS knows `servant` can be undefined
   const servantsData = useServantsData();
   const servant = user?.servants.at(idx);
-  if (!user || !servant) return null; // TODO: error handling
+  if (!user || !servant) return <NoAccountError />;
   const servantData = servantsData[servant.id];
 
   return (
