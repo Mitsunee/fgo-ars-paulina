@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/preact";
-import { atom } from "nanostores";
+import { atom, onSet } from "nanostores";
 import type { AnyComponent } from "preact";
 import { AddServantView } from "~/views/AddServant";
 import { CreateAccountView } from "~/views/CreateAccount";
@@ -25,6 +25,10 @@ type SelectedRoute<Path extends Route> = {
   : { props: Parameters<Router[Path]>[0] });
 
 const router = atom<SelectedRoute<Route>>({ path: "home", props: {} });
+
+onSet(router, () => {
+  window?.scrollTo({ top: 0, behavior: "instant" });
+});
 
 export function changeRoute<Path extends Route>({
   path,
