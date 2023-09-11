@@ -9,8 +9,8 @@ interface Props {
 ---
 
 <Document
-  title={Astro.props.title}
-  description="This site is still in development :)">
+  title={Astro.props.title ?? "FGO ARS PAULINA"}
+  description="Material Manager App for Fate/Grand Order">
   <main>
     <NoScript />
     <slot />

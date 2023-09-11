@@ -84,6 +84,7 @@ function MaterialSummary({ id, setServant }: MaterialSummaryProps) {
           );
         })}
       </div>
+      {/* TODO: add edit UI */}
       <ButtonRow>
         <button type="button" onClick={() => dialog.close()}>
           Close

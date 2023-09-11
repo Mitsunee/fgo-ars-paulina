@@ -5,8 +5,8 @@ import "@fontsource/kanit/700.css";
 import "~/styles/app.css";
 
 interface Props {
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
   noRobots?: true;
   // image // TODO: implement meta image
 }
@@ -14,12 +14,14 @@ interface Props {
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" /><meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <meta name="application-name" content="FGO Manager" />
-    <meta property="og:site_name" content="FGO Manager" />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="application-name" content="FGO ARS PAULINA" />
+    <meta property="og:site_name" content="FGO ARS PAULINA" />
     {Astro.props.noRobots && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={Astro.url.href} />
     <title>{Astro.props.title}</title>

@@ -221,9 +221,9 @@ export function selectAccount(id: string) {
   if (!account) return false;
   accountStore.set(account);
   Storage.write("selected", id);
-  document.title = `FGO Manager - ${
+  document.title = `${
     account.name
-  } (${account.region.toUpperCase()})`;
+  } (${account.region.toUpperCase()}) | FGO ARS PAULINA`;
   return true;
 }
 
