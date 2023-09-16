@@ -63,4 +63,13 @@
       -1px -1px var(--black),
       1px 1px 3px var(--black);
   }
+
+  &.done > figcaption {
+    color: var(--success);
+  }
+}
+
+button:hover > .icon.done > figcaption,
+button:focus > .icon.done > figcaption {
+  color: inherit;
 }

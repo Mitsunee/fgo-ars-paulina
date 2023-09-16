@@ -125,12 +125,15 @@ export function MaterialOverview({ setServant }: MaterialOverviewProps) {
         <div className="icon-list no-hover">
           {mats.map(({ id, amount }) => {
             const mat = materialsData[id];
+            const owned = user.materials[id] ?? 0;
+            const delta = amount - owned;
             return (
               <button key={id} type="button" onClick={() => setSelected(id)}>
                 <BorderedIcon
                   key={id}
                   src={mat.icon}
                   border={mat.rarity}
+                  done={delta <= 0}
                   title={mat.name}>
                   x{amount}
                 </BorderedIcon>

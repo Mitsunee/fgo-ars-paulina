@@ -107,6 +107,9 @@
 
 .delta {
   grid-area: delta;
+  &.done {
+    color: var(--success);
+  }
 }
 
 .extra {

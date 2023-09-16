@@ -11,6 +11,7 @@ import { ArrowButton } from "~/components/ArrowButton";
 import { BorderedIcon } from "~/components/BorderedIcon";
 import { ButtonField, ButtonRow } from "~/components/ButtonField";
 import { InputRadio } from "~/components/InputRadio";
+import { cc } from "~/components/jsx";
 import { NoAccountError } from "~/components/NoAccountError";
 import { flattenMaterialUsage } from "~/util/flattenMaterialUsage";
 import { useFilters } from "./filters";
@@ -184,7 +185,8 @@ export function InventoryView() {
                   <legend>Needed</legend>
                   <output value={needed} />
                 </fieldset>
-                <fieldset className={styles.delta}>
+                <fieldset
+                  className={cc([styles.delta, delta <= 0 && styles.done])}>
                   <legend>Delta</legend>
                   <output value={delta} />
                 </fieldset>

@@ -6,6 +6,7 @@ type BorderColor = Rarity | "blue";
 
 interface BorderedIconProps extends WithCC<ElementProps<"figure">> {
   border: number | BorderColor;
+  done?: boolean;
   title: string;
   src: string;
 }
@@ -36,6 +37,7 @@ export function BorderedIcon({
   children,
   className,
   border,
+  done,
   title,
   src,
   ...props
@@ -45,7 +47,12 @@ export function BorderedIcon({
   return (
     <figure
       {...props}
-      className={cc([styles.icon, styles[borderColor], className])}>
+      className={cc([
+        styles.icon,
+        styles[borderColor],
+        done && styles.done,
+        className
+      ])}>
       <img
         src={src}
         alt={title}
