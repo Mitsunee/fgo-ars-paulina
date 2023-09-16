@@ -2,13 +2,15 @@ import { Searcher } from "fast-fuzzy";
 import type { Dispatch } from "preact/hooks";
 import { useMemo, useState } from "preact/hooks";
 import { returnHome } from "~/client/router";
+import { ButtonField } from "~/components/ButtonField";
+import type {
+  FiltersAction,
+  FiltersState
+} from "~/components/ServantFiltersForm";
 import {
   createFilterCheck,
-  type FiltersAction,
-  type FiltersState
-} from "~/client/servantsFilter";
-import { ButtonField } from "~/components/ButtonField";
-import { ServantFiltersForm } from "~/components/ServantFiltersForm";
+  ServantFiltersForm
+} from "~/components/ServantFiltersForm";
 import type { ServantData } from "~/data/servants";
 import { getServantIconUrl } from "~/util/urls";
 

@@ -3,10 +3,13 @@ import { useMemo, useState } from "preact/hooks";
 import { useAccount } from "~/client/account";
 import { useServantsData } from "~/client/context";
 import { changeRoute } from "~/client/router";
-import { createFilterCheck, useFilters } from "~/client/servantsFilter";
 import { ButtonRow } from "~/components/ButtonField";
 import { NoAccountError } from "~/components/NoAccountError";
-import { ServantFiltersForm } from "~/components/ServantFiltersForm";
+import {
+  createFilterCheck,
+  ServantFiltersForm,
+  useFilters
+} from "~/components/ServantFiltersForm";
 import { MaterialOverview } from "./MaterialOverview";
 import { ServantCard } from "./ServantCard";
 import styles from "./ServantList.module.css";
