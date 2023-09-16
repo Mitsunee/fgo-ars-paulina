@@ -2,10 +2,11 @@ import { useMemo, useState } from "preact/hooks";
 import { addServant, createServant } from "~/client/account";
 import { useServantsData } from "~/client/context";
 import { returnHome } from "~/client/router";
+import { useFilters } from "~/client/servantsFilter";
 import { EditServantForm } from "~/components/EditServantForm";
 import { getEditedServant } from "~/components/EditServantForm/getEditedServant";
 import { MaterialInfoSection } from "./MaterialInfoSection";
-import { PickServantForm, useFilters } from "./PickServantForm";
+import { PickServantForm } from "./PickServantForm";
 
 export function AddServantView() {
   const [servantId, setServant] = useState<IdKey | null>(null);
